@@ -1,0 +1,376 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for react-datepicker to match the dark theme */
+.react-datepicker {
+  @apply bg-slate-800 text-slate-100 border border-slate-700 rounded-lg shadow-lg;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.react-datepicker__header {
+  @apply bg-slate-700 border-b border-slate-600 rounded-t-lg;
+  padding-top: 0.8em;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  @apply text-slate-200;
+}
+
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
+  @apply text-blue-400 hover:bg-slate-600 rounded;
+}
+
+.react-datepicker__day {
+  @apply text-slate-300 hover:bg-blue-700 hover:text-white rounded;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  @apply bg-blue-600 text-white rounded;
+}
+
+.react-datepicker__day--outside-month {
+  @apply text-slate-400 opacity-50;
+}
+
+.react-datepicker__day--weekend {
+  @apply text-red-300;
+}
+
+.react-datepicker__day--disabled {
+  @apply text-slate-400 cursor-not-allowed;
+}
+
+.react-datepicker__week-number {
+  @apply text-slate-400;
+}
+
+.react-datepicker__input-container input {
+  @apply bg-slate-900 text-slate-100 text-white border-slate-600;
+  /* Ensure input field itself matches EditableCell styling */
+}
+
+/* Dropdown Styles for Year/Month */
+.react-datepicker__header__dropdown select {
+  @apply bg-slate-700 text-white border border-slate-600 rounded p-1;
+}
+
+.react-datepicker__year-dropdown,
+.react-datepicker__month-dropdown,
+.react-datepicker__month-year-dropdown {
+  @apply bg-slate-800 border border-slate-700 text-white;
+}
+
+.react-datepicker__year-option,
+.react-datepicker__month-option,
+.react-datepicker__month-year-option {
+  @apply hover:bg-slate-700;
+}
+
+.react-datepicker__year-option--selected,
+.react-datepicker__month-option--selected,
+.react-datepicker__month-year-option--selected {
+  @apply bg-blue-600 font-bold;
+}
+
+/* Standard Date Input Calendar Icon Styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.8);
+  /* Make icon light for dark backgrounds */
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+}
+
+
+/* Styling for popper to ensure it sits above other content */
+.react-datepicker-popper {
+  z-index: 9999;
+}
+
+/* =========================================
+   SOFTER INDUSTRIAL THEME
+   ========================================= */
+
+:root {
+  /* Navy Background */
+  --bg-primary: #0a1628;
+  --bg-secondary: #0f172a;
+  --bg-tertiary: #1e293b;
+
+  /* Engineering Blues/Teals */
+  --accent-primary: #0ea5e9;
+  --accent-secondary: #06b6d4;
+  --accent-hover: #38bdf8;
+
+  /* Status Colors - Softer */
+  --success: #10b981;
+  --success-dark: #059669;
+  --warning: #f59e0b;
+  --warning-dark: #d97706;
+  --danger: #dc2626;
+  --danger-dark: #b91c1c;
+
+  /* Neutrals */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--slate-200);
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(10, 22, 40, 0.95) 0%, rgba(6, 12, 25, 1) 100%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e293b' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Inter', 'Roboto', sans-serif;
+  font-weight: 700;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--slate-700);
+  border-radius: 4px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--slate-600);
+}
+
+/* Softer Glow Utilities */
+.glow-teal {
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.glow-blue {
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
+}
+
+/* =========================================
+   PRINT STYLES - Override Dark Mode
+   ========================================= */
+
+@media print {
+
+  /* Higher specificity overrides for print-content container */
+  .print-content .bg-slate-800,
+  .print-content .bg-slate-900,
+  .print-content .bg-slate-700 {
+    background-color: white !important;
+    background-image: none !important;
+  }
+
+  /* Override body and main container backgrounds */
+  body,
+  .bg-slate-800,
+  .bg-slate-900,
+  .bg-slate-700 {
+    background-color: white !important;
+    background-image: none !important;
+  }
+
+  /* Higher specificity text color overrides */
+  .print-content .text-slate-100,
+  .print-content .text-slate-200,
+  .print-content .text-slate-300,
+  .print-content .text-slate-400 {
+    color: black !important;
+  }
+
+  /* Default text to black, but allow specific color classes */
+  body {
+    color: black !important;
+  }
+
+  /* Preserve heading and important text */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: black !important;
+  }
+
+  /* Preserve table text */
+  table,
+  th,
+  td {
+    color: black !important;
+  }
+
+  /* Preserve status badge backgrounds and text colors */
+  .bg-red-100 {
+    background-color: #fee2e2 !important;
+  }
+
+  .bg-amber-100 {
+    background-color: #fef3c7 !important;
+  }
+
+  .bg-green-100 {
+    background-color: #d1fae5 !important;
+  }
+
+  .bg-blue-100 {
+    background-color: #dbeafe !important;
+  }
+
+  /* Preserve status text colors */
+  .text-red-800,
+  .text-red-900 {
+    color: #991b1b !important;
+  }
+
+  .text-amber-800,
+  .text-amber-900 {
+    color: #92400e !important;
+  }
+
+  .text-green-800,
+  .text-green-900 {
+    color: #065f46 !important;
+  }
+
+  .text-blue-600 {
+    color: #2563eb !important;
+  }
+
+  /* Borders should be visible */
+  .border,
+  .border-t,
+  .border-b,
+  .border-l,
+  .border-r {
+    border-color: #d1d5db !important;
+  }
+
+  .print-content .border-slate-600,
+  .print-content .border-slate-700,
+  .print-content .border-slate-800,
+  .print-content .border-slate-900 {
+    border-color: #d1d5db !important;
+  }
+
+  .print-content .divide-slate-200 > * + * {
+    border-color: #d1d5db !important;
+  }
+
+  /* Print content isolation - only print the inner document */
+  .print-content > :not(.print-content-inner) {
+    display: none !important;
+  }
+
+  /* Ensure the inner content takes full width in print */
+  .print-content .print-content-inner {
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: white !important;
+  }
+
+  .border-red-200 {
+    border-color: #fecaca !important;
+  }
+
+  .border-amber-200 {
+    border-color: #fde68a !important;
+  }
+
+  .border-green-200 {
+    border-color: #a7f3d0 !important;
+  }
+
+  /* Hide non-printable elements */
+  .no-print,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Remove shadows */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Ensure proper page breaks */
+  .break-inside-avoid {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Tables should print correctly */
+  table {
+    border-collapse: collapse !important;
+  }
+
+  th,
+  td {
+    border: 1px solid #d1d5db !important;
+    padding: 0.5rem !important;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  /* Remove rounded corners */
+  .rounded,
+  .rounded-lg,
+  .rounded-xl {
+    border-radius: 0 !important;
+  }
+
+  /* Ensure text is readable */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  h1 {
+    font-size: 24pt;
+  }
+
+  h2 {
+    font-size: 18pt;
+  }
+
+  h3 {
+    font-size: 14pt;
+  }
+
+  /* Ensure links are visible */
+  a {
+    text-decoration: underline;
+    color: black !important;
+  }
+}
