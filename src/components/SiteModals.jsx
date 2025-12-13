@@ -1,40 +1,22 @@
 import React, { useState } from 'react';
 import { Modal, Button, UniversalDatePicker, SecureDeleteButton } from './UIComponents';
 import { Icons } from '../constants/icons.jsx';
-import { formatDate } from '../utils/helpers';
+import { formatDate, formatFullLocation } from '../utils/helpers';
 import { validateSiteForm, sanitizeInput } from '../utils/validation';
 import { useGlobalData } from '../context/GlobalDataContext';
+import { FORM_STYLES } from '../constants/uiConstants';
 
-// Helper function to format full location string
-const formatFullLocation = (siteForm) => {
-  const parts = [];
-
-  if (siteForm.streetAddress) parts.push(siteForm.streetAddress);
-  if (siteForm.city) parts.push(siteForm.city);
-  if (siteForm.state) parts.push(siteForm.state);
-  if (siteForm.postcode) parts.push(siteForm.postcode);
-  if (siteForm.country && siteForm.country !== 'Australia') parts.push(siteForm.country);
-
-  // If no detailed address, fallback to location name
-  if (parts.length === 0 && siteForm.location) {
-    return siteForm.location;
-  }
-
-  return parts.join(', ') || 'Location will appear here...';
-};
-
-// CSS class constants for form styling
-const labelClass = "block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider";
-const inputClass = "w-full p-2 border border-slate-600 rounded text-sm bg-slate-900 text-white focus:outline-none focus:border-blue-500";
-const sectionClass = "p-3 bg-slate-800/50 rounded border border-slate-700";
+// Helper functions and constants now imported from utils and constants
+// formatFullLocation: src/utils/helpers.js
+// FORM_STYLES: src/constants/uiConstants.js
 
 const TypeSelect = ({ value, onChange }) => (
   <div>
-    <label className={labelClass}>Site Type</label>
+    <label className={FORM_STYLES.label}>Site Type</label>
     <select
       value={value || 'Mine'}
       onChange={onChange}
-      className="w-full p-2 border border-slate-600 rounded text-sm bg-slate-900 text-white focus:outline-none focus:border-blue-500"
+      className={FORM_STYLES.input}
     >
       <option value="Mine">Mine</option>
       <option value="Quarry">Quarry</option>

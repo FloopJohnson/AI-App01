@@ -47,3 +47,11 @@ export const DEFAULT_NEW_ASSET = {
 };
 
 export const DEFAULT_SPEC_NOTE_INPUT = { content: '', author: '' };
+
+// Form styling constants (used in modals and forms)
+export const FORM_STYLES = {
+    label: "block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider",
+    input: "w-full p-2 border border-slate-600 rounded text-sm bg-slate-900 text-white focus:outline-none focus:border-blue-500",
+    section: "p-3 bg-slate-800/50 rounded border border-slate-700"
+};
+

@@ -28,12 +28,61 @@ import { Icons } from '../constants/icons.jsx';
 // UI COMPONENTS (DARK THEME)
 // ==========================================
 
+/**
+ * Reusable card container with rounded corners and transitions
+ * 
+ * @description A simple wrapper component that provides consistent styling for card-based layouts.
+ * Includes rounded corners and smooth color transitions. Supports click events for interactive cards.
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Content to display inside the card
+ * @param {string} [props.className=''] - Additional CSS classes to apply
+ * @param {Function} [props.onClick] - Optional click handler for interactive cards
+ * @returns {JSX.Element} Rendered card component
+ * @example
+ * // Basic card
+ * <Card className="bg-slate-800 p-4">
+ *   <h2>Title</h2>
+ *   <p>Content</p>
+ * </Card>
+ * 
+ * @example
+ * // Interactive card
+ * <Card onClick={() => handleCardClick()} className="cursor-pointer hover:bg-slate-700">
+ *   Click me
+ * </Card>
+ */
 export const Card = ({ children, className = "", onClick }) => (
   <div onClick={onClick} className={`rounded-xl transition-colors duration-200 ${className}`}>
     {children}
   </div>
 );
 
+/**
+ * Styled button component with multiple variants and states
+ * 
+ * @description A versatile button component with cyber-industrial dark theme styling.
+ * Supports multiple variants (primary, secondary, orange, danger, risk levels) with
+ * neon glow effects and smooth transitions. Handles disabled state automatically.
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Button content (text, icons, etc.)
+ * @param {Function} [props.onClick] - Click event handler
+ * @param {boolean} [props.disabled=false] - Whether button is disabled
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @param {string} [props.variant='primary'] - Button style variant: 'primary', 'secondary', 'orange', 'danger', 'risk-active', 'risk-inactive'
+ * @param {string} [props.type='button'] - HTML button type attribute
+ * @returns {JSX.Element} Rendered button component
+ * @example
+ * // Primary button with icon
+ * <Button onClick={handleSave} variant="primary">
+ *   <Icons.Save /> Save Changes
+ * </Button>
+ * 
+ * @example
+ * // Danger button (disabled)
+ * <Button onClick={handleDelete} variant="danger" disabled={!canDelete}>
+ *   Delete Item
+ * </Button>
+ */
 export const Button = ({ children, onClick, disabled, className = "", variant = "primary", type = "button" }) => {
   let baseStyle = "px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-all flex items-center justify-center gap-2 backdrop-blur-sm ";
 
@@ -59,6 +108,40 @@ export const Button = ({ children, onClick, disabled, className = "", variant = 
   return <button type={type} onClick={onClick} disabled={disabled} className={`${baseStyle} ${className}`}>{children}</button>;
 };
 
+/**
+ * Dropdown select input with icon support and dark theme styling
+ * 
+ * @description A styled select dropdown with optional leading icon, custom placeholder,
+ * and consistent dark theme styling. Includes hover effects and focus states.
+ * @param {Object} props - Component props
+ * @param {string} props.value - Currently selected value
+ * @param {Function} props.onChange - Change event handler
+ * @param {Array<{value: string, label: string}>} [props.options=[]] - Array of option objects
+ * @param {string} [props.placeholder='Select...'] - Placeholder text for empty state
+ * @param {string} [props.className=''] - Additional CSS classes
+ * @param {React.Component} [props.icon] - Optional icon component to display on the left
+ * @returns {JSX.Element} Rendered select input component
+ * @example
+ * // Basic select
+ * <SelectInput
+ *   value={selectedSite}
+ *   onChange={(e) => setSelectedSite(e.target.value)}
+ *   options={[
+ *     { value: 'site1', label: 'North Mine' },
+ *     { value: 'site2', label: 'South Quarry' }
+ *   ]}
+ *   placeholder="Choose a site..."
+ * />
+ * 
+ * @example
+ * // With icon
+ * <SelectInput
+ *   value={status}
+ *   onChange={handleStatusChange}
+ *   options={statusOptions}
+ *   icon={Icons.Filter}
+ * />
+ */
 export const SelectInput = ({ value, onChange, options = [], placeholder = "Select...", className = "", icon: Icon }) => {
   return (
     <div className={`relative ${className}`}>
@@ -270,6 +353,27 @@ export const SecureDeleteButton = ({ onComplete, duration = 3000, label = "Hold 
   );
 };
 
+/**
+ * Status badge component for asset maintenance status
+ * 
+ * @description Displays a color-coded pill badge indicating the maintenance status
+ * of an asset based on remaining days until due. Handles archived assets and overdue items.
+ * @param {Object} props - Component props
+ * @param {number} props.remaining - Days remaining until maintenance is due (negative if overdue)
+ * @param {boolean} [props.isActive] - Whether the asset is active (false = archived)
+ * @returns {JSX.Element} Rendered status badge
+ * @example
+ * // Overdue asset
+ * <StatusBadge remaining={-5} isActive={true} /> // Shows red "Overdue" badge
+ * 
+ * @example
+ * // Due soon
+ * <StatusBadge remaining={15} isActive={true} /> // Shows yellow "Due Soon" badge
+ * 
+ * @example
+ * // Archived asset
+ * <StatusBadge remaining={30} isActive={false} /> // Shows gray "Archived" badge
+ */
 export const StatusBadge = ({ remaining, isActive }) => {
   if (isActive === false) return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-700 text-slate-400 border border-slate-600 shadow-sm"><Icons.Archive /> Archived</span>;
   if (remaining < 0) return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-900/50 text-red-300 border border-red-800 shadow-sm"><Icons.AlertTriangle /> Overdue</span>;
@@ -488,6 +592,29 @@ export const CalendarWidget = ({ assets, selectedAssetId, onAssetSelect }) => {
   );
 };
 
+/**
+ * Modal dialog component with dark theme styling
+ * 
+ * @description A full-screen overlay modal with customizable size, backdrop blur,
+ * and error boundary protection. Includes close button and responsive sizing.
+ * @param {Object} props - Component props
+ * @param {string} props.title - Modal header title
+ * @param {Function} props.onClose - Callback function when modal is closed
+ * @param {React.ReactNode} props.children - Modal body content
+ * @param {string} [props.size='md'] - Modal width: 'md', 'lg', or 'max'
+ * @returns {JSX.Element} Rendered modal component
+ * @example
+ * // Medium modal (default)
+ * <Modal title="Edit Details" onClose={() => setShowModal(false)}>
+ *   <form>...</form>
+ * </Modal>
+ * 
+ * @example
+ * // Large modal
+ * <Modal title="Site Notes" onClose={handleClose} size="lg">
+ *   <NotesList />
+ * </Modal>
+ */
 export const Modal = ({ title, onClose, children, size = "md" }) => {
   // Determine max width based on size prop
   const maxWidth = size === "max" ? "max-w-7xl" : size === "lg" ? "max-w-4xl" : "max-w-md";

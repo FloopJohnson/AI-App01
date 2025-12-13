@@ -218,7 +218,7 @@ export const CategoryManager = () => {
                                                     className="p-1.5 rounded hover:bg-slate-600 text-red-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                                                     title={(categoryUsage[category.name] || 0) > 0 ? 'Cannot delete - parts are using this category' : 'Delete Category'}
                                                 >
-                                                    <Icons.Trash2 size={16} />
+                                                    <Icons.Trash size={16} />
                                                 </button>
                                             </div>
                                         )}
