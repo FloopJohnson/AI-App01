@@ -1,8 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
 // Keys are loaded from environment variables (.env file)
@@ -25,7 +23,6 @@ if (!env.VITE_FIREBASE_PROJECT_ID) {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 // Export services
 import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";

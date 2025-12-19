@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Icons } from '../../constants/icons';
-import { addSupplier, updateSupplier, linkPartToSupplier } from '../../services/inventoryService';
+import { addSupplier, updateSupplier } from '../../services/inventoryService';
 
 export const SupplierManager = () => {
     const [suppliers, setSuppliers] = useState([]);

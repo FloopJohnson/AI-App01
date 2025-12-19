@@ -71,7 +71,7 @@ export const StockTakeMode = () => {
         }
 
         const updates = Object.entries(counts)
-            .filter(([_, count]) => count !== '')
+            .filter(([_, _count]) => _count !== '')
             .map(([partId, count]) => ({
                 partId,
                 variance: parseInt(count) - getCurrentStock(partId)
@@ -214,8 +214,8 @@ export const StockTakeMode = () => {
                                         <td className="px-4 py-3 text-center">
                                             {variance !== null && (
                                                 <span className={`px-3 py-1 rounded font-mono font-bold ${variance > 0 ? 'bg-emerald-500/20 text-emerald-400' :
-                                                        variance < 0 ? 'bg-red-500/20 text-red-400' :
-                                                            'bg-slate-700 text-slate-400'
+                                                    variance < 0 ? 'bg-red-500/20 text-red-400' :
+                                                        'bg-slate-700 text-slate-400'
                                                     }`}>
                                                     {variance > 0 ? '+' : ''}{variance}
                                                 </span>

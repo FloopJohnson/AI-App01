@@ -33,12 +33,10 @@ export async function getPartCostAtDate(partId, date) {
 
         // Fallback: get current cost from part catalog
         let catalogRef = await getDocs(query(collection(db, 'part_catalog'), where('id', '==', partId)));
-        let catalogName = 'part_catalog';
 
         // If not found in part catalog, try fastener catalog
         if (catalogRef.empty) {
             catalogRef = await getDocs(query(collection(db, 'fastener_catalog'), where('id', '==', partId)));
-            catalogName = 'fastener_catalog';
         }
 
         if (!catalogRef.empty) {

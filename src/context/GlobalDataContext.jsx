@@ -51,13 +51,17 @@ export const GlobalDataProvider = ({ children }) => {
             }
         );
 
-        setLoading(false);
-
         return () => {
             unsubCustomers();
             unsubSites();
             unsubEmployees();
         };
+    }, []);
+
+    // Set loading to false after subscriptions are set up
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    useEffect(() => {
+        setLoading(false);
     }, []);
 
     // --- AUTO-REPAIR ORPHANED SITES ---

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PDFViewer, Page, Text, View, Document } from '@react-pdf/renderer';
 import { ServiceReportFixed } from './ServiceReportFixed';
 import { MaintenanceReportPDF } from './MaintenanceReportPDF';
@@ -8,37 +8,8 @@ import { generateSampleSite } from '../data/mockData';
 // Generate reuseable mock data
 const mockSite = generateSampleSite();
 mockSite.logo = null; // Disable logo for dev viewer to prevent Image crash
-const mockServiceDate = new Date().toLocaleDateString('en-AU');
 
-// Service Report Mock Data
-const mockServiceReportData = {
-    general: {
-        reportId: `REP-${Math.floor(Math.random() * 10000)}`,
-        customerName: mockSite.customer,
-        siteLocation: mockSite.location,
-        contactName: mockSite.contacts?.[0]?.name || 'Unknown Contact',
-        contactEmail: mockSite.contacts?.[0]?.email || 'unknown@example.com',
-        // customerLogo: mockSite.logo, // Disabled
-        assetName: mockSite.serviceData[0]?.name || 'Test Asset',
-        conveyorNumber: mockSite.serviceData[0]?.code || 'CV-001',
-        serviceDate: mockServiceDate,
-        technicians: 'Tech 1, Tech 2',
-        nextServiceDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-AU'),
-        comments: 'Routine service completed successfully. No major issues found.'
-    },
-    calibration: {
-        showPercentChange: true,
-    },
-    calibrationRows: [
-        { parameter: 'Zero', oldValue: '0.00', newValue: '0.00', percentChange: '0.00' },
-        { parameter: 'Span', oldValue: '1000', newValue: '1000', percentChange: '0.00' },
-        { parameter: 'Speed', oldValue: '2.5', newValue: '2.5', percentChange: '0.00' }
-    ],
-    integrator: [
-        { label: 'Total 1', asFound: '10000', asLeft: '10050' },
-        { label: 'Total 2', asFound: '5000', asLeft: '5025' }
-    ]
-};
+
 
 const mockQuote = {
     id: 'Q-1001',
@@ -71,7 +42,6 @@ const mockQuote = {
 const DevPDFViewer = () => {
     const [selectedReport, setSelectedReport] = useState('job-sheet');
     const [debugMode, setDebugMode] = useState(false);
-    const [zoom, setZoom] = useState(1.0);
 
     const reportOptions = [
         { id: 'job-sheet', label: 'Technician Job Sheet (Working)' },

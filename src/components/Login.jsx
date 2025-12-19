@@ -14,7 +14,7 @@ export default function Login() {
         setLoading(true);
         try {
             await login(email, password);
-        } catch (err) {
+        } catch {
             setError('Invalid email or password.');
         }
         setLoading(false);

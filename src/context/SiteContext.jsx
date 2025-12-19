@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useUndo } from '../hooks/useUndo';
 import { recalculateRow, generateSampleSite } from '../data/mockData';
-import { safelyLoadData } from '../utils/dataUtils';
 import { SiteContext } from './SiteContext.context';
 
 // --- FIREBASE IMPORTS ---
@@ -65,7 +63,9 @@ export const SiteProvider = ({ children }) => {
                 try {
                     setSites(JSON.parse(localData));
                     console.warn('Loaded sites from LocalStorage fallback');
-                } catch (e) { }
+                } catch {
+                    // Ignore parse errors
+                }
             }
         });
 
@@ -94,7 +94,7 @@ export const SiteProvider = ({ children }) => {
     // --- ACTIONS (Directly to Firestore) ---
 
     // Generic Update Function
-    const updateSiteData = async (siteId, updates, description = 'Update Site Data') => {
+    const updateSiteData = async (siteId, updates) => {
         // Optimistic UI update
         // (Note: Firestore listeners are fast, so we *could* skip this, 
         // but keeping it ensures instant feedback even on slow connections)
@@ -613,8 +613,6 @@ export const SiteProvider = ({ children }) => {
     };
 
     // --- MISC ---
-
-    const handleClearAllHistory = () => { alert("Global history clear not implemented for Cloud DB"); };
 
     // --- TODO ACTIONS ---
     const handleAddTodo = async (todoData) => {

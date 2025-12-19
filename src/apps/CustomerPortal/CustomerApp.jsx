@@ -92,7 +92,7 @@ export const CustomerApp = ({ onBack }) => {
     const reportingContacts = (selectedCustomer?.contacts || []).filter(c => c.sendReports === true);
 
     // Logo upload handler
-    const handleLogoUpload = (e, forSite = false) => {
+    const handleLogoUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -260,10 +260,7 @@ export const CustomerApp = ({ onBack }) => {
         setFormData({});
     };
 
-    const handleViewSiteContacts = (site) => {
-        setSelectedSiteForContacts(site);
-        setIsViewContactsOpen(true);
-    };
+
 
     // Notes handlers
     const handleAddNote = async () => {

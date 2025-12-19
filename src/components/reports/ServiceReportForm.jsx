@@ -47,6 +47,7 @@ export const ServiceReportForm = ({ site, asset, employees = [], onClose, onSave
     });
 
     // --- LOAD DATA ON MOUNT ---
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => {
         if (initialData) {
             setFormData({
@@ -97,9 +98,6 @@ export const ServiceReportForm = ({ site, asset, employees = [], onClose, onSave
 
             try {
                 localStorage.setItem(draftKey, JSON.stringify(storageData));
-                setDraftSaved(true);
-                const timer = setTimeout(() => setDraftSaved(false), 2000);
-                return () => clearTimeout(timer);
             } catch (error) {
                 if (error.name === 'QuotaExceededError') {
                     console.warn('Local storage quota exceeded. Draft not saved.');
@@ -107,6 +105,15 @@ export const ServiceReportForm = ({ site, asset, employees = [], onClose, onSave
                     console.error('Error saving draft:', error);
                 }
             }
+        }
+    }, [formData, asset?.id, readOnly, initialData]);
+
+    // Show draft saved indicator
+    useEffect(() => {
+        if (asset?.id && !readOnly && !initialData) {
+            setDraftSaved(true);
+            const timer = setTimeout(() => setDraftSaved(false), 2000);
+            return () => clearTimeout(timer);
         }
     }, [formData, asset?.id, readOnly, initialData]);
 

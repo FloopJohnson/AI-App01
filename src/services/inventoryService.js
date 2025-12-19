@@ -6,7 +6,6 @@ import {
     setDoc,
     updateDoc,
     deleteDoc,
-    getDoc,
     getDocs,
     query,
     where,
@@ -445,7 +444,7 @@ export const linkPartToSupplier = async (partId, supplierId, supplierPartNumber,
 // QUERY OPERATIONS
 // ==========================================
 
-export const getStockMovementHistory = async (partId = null, locationId = null, limit = 100) => {
+export const getStockMovementHistory = async (partId = null, locationId = null) => {
     try {
         let q = collection(db, 'stock_movements');
         const constraints = [orderBy('timestamp', 'desc')];

@@ -6,7 +6,6 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 
 export default function UserManagement({ onBack }) {
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     // Form State
     const [newUserEmail, setNewUserEmail] = useState('');
@@ -20,7 +19,6 @@ export default function UserManagement({ onBack }) {
         const querySnapshot = await getDocs(collection(db, 'users'));
         const userList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setUsers(userList);
-        setLoading(false);
     };
 
     useEffect(() => {
@@ -140,8 +138,8 @@ export default function UserManagement({ onBack }) {
                                     <td className="p-4 text-slate-400">{user.email}</td>
                                     <td className="p-4">
                                         <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${user.role === 'admin' ? 'bg-purple-900/50 text-purple-400' :
-                                                user.role === 'manager' ? 'bg-blue-900/50 text-blue-400' :
-                                                    'bg-slate-700 text-slate-300'
+                                            user.role === 'manager' ? 'bg-blue-900/50 text-blue-400' :
+                                                'bg-slate-700 text-slate-300'
                                             }`}>
                                             {user.role}
                                         </span>

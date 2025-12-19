@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button, Modal } from './UIComponents';
 import { Icons } from '../constants/icons.jsx';
 
@@ -11,91 +11,82 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
     date: new Date().toISOString().split('T')[0],
     techNames: [''],
     scaleCondition: '',
-    
+
     // Tare/Zero
     oldTare: '',
     newTare: '',
     tareChange: '',
     tareRepeatability: '',
-    
+
     // Span
     oldSpan: '',
     newSpan: '',
     spanChange: '',
     spanRepeatability: '',
-    
+
     // Load Cell
     lcMvZero: '',
     lcMvSpan: '',
-    
+
     // Belt & Speed
     beltSpeed: '',
     beltLength: '',
     testLength: '',
     testTime: '',
-    
+
     // System Tests
     totaliserAsLeft: '',
     revTime: '',
     testRevolutions: '',
     pulses: '',
     simulatedRate: '',
-    
+
     // Results
     targetWeight: '',
-    
+
     // Comments
     comments: '',
     recommendations: '',
-    
+
     // File naming
     jobNumber: '',
     jobCode: ''
   });
 
-  // Auto-generate filename when date, job number, or code changes
-  useEffect(() => {
+  // Derived values calculated from form data
+  const calculatedFileName = useMemo(() => {
     const { date, jobNumber, jobCode } = formData;
     if (date && (jobNumber || jobCode)) {
       const dateStr = date.replace(/-/g, '.');
       const jobPart = jobNumber && jobCode ? `${jobNumber}-${jobCode}` : jobNumber || jobCode;
-      const newFileName = `${dateStr}-CALR-${jobPart}.pdf`;
-      setFormData(prev => ({
-        ...prev,
-        fileName: newFileName
-      }));
+      return `${dateStr}-CALR-${jobPart}.pdf`;
     } else if (date) {
       const dateStr = date.replace(/-/g, '.');
-      const newFileName = `${dateStr}-CALR.pdf`;
-      setFormData(prev => ({
-        ...prev,
-        fileName: newFileName
-      }));
+      return `${dateStr}-CALR.pdf`;
     }
+    return '';
   }, [formData.date, formData.jobNumber, formData.jobCode]);
 
-  // Calculate tare change when old/new values change
-  useEffect(() => {
+  const calculatedTareChange = useMemo(() => {
     if (formData.oldTare && formData.newTare) {
       const oldValue = parseFloat(formData.oldTare);
       const newValue = parseFloat(formData.newTare);
       if (!isNaN(oldValue) && !isNaN(newValue) && oldValue !== 0) {
-        const change = ((newValue - oldValue) / oldValue * 100).toFixed(2);
-        setFormData(prev => ({ ...prev, tareChange: change }));
+        return ((newValue - oldValue) / oldValue * 100).toFixed(2);
       }
     }
+    return '';
   }, [formData.oldTare, formData.newTare]);
 
-  // Calculate span change when old/new values change
-  useEffect(() => {
+  const calculatedSpanChange = useMemo(() => {
     if (formData.oldSpan && formData.newSpan) {
       const oldValue = parseFloat(formData.oldSpan);
       const newValue = parseFloat(formData.newSpan);
       if (!isNaN(oldValue) && !isNaN(newValue) && oldValue !== 0) {
-        const change = ((newValue - oldValue) / oldValue * 100).toFixed(2);
-        setFormData(prev => ({ ...prev, spanChange: change }));
+        return ((newValue - oldValue) / oldValue * 100).toFixed(2);
       }
     }
+    return '';
   }, [formData.oldSpan, formData.newSpan]);
 
   const handleInputChange = (field, value) => {
@@ -122,7 +113,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
   const handleSave = () => {
     // Clear previous validation error
     setValidationError('');
-    
+
     // Validate required fields
     const validTechNames = techNames.filter(name => name.trim());
     if (!formData.date || validTechNames.length === 0) {
@@ -135,10 +126,10 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
       ...formData,
       id: `rep-${Date.now()}`,
       technician: validTechNames.join(', '),
-      fileName: formData.fileName || `${formData.date.replace(/-/g, '.')}-CALR.pdf`,
+      fileName: calculatedFileName || `${formData.date.replace(/-/g, '.')}-CALR.pdf`,
       // Map to existing report structure
-      tareChange: parseFloat(formData.tareChange) || 0,
-      spanChange: parseFloat(formData.spanChange) || 0,
+      tareChange: parseFloat(formData.tareChange || calculatedTareChange) || 0,
+      spanChange: parseFloat(formData.spanChange || calculatedSpanChange) || 0,
       zeroMV: formData.lcMvZero || 'N/A',
       spanMV: formData.lcMvSpan || 'N/A',
       speed: parseFloat(formData.beltSpeed) || 'N/A',
@@ -283,10 +274,10 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
               </div>
             </div>
 
-            {formData.fileName && (
+            {calculatedFileName && (
               <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-3">
                 <label className="block text-sm font-medium text-slate-300 mb-1">Generated Filename</label>
-                <div className="text-sm text-blue-400 font-mono">{formData.fileName}</div>
+                <div className="text-sm text-blue-400 font-mono">{calculatedFileName}</div>
               </div>
             )}
           </div>
@@ -296,7 +287,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-200 mb-4">Tare/Zero Calibration</h3>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Old Tare/Zero</label>
@@ -325,7 +316,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
                 <label className="block text-sm font-medium text-slate-300 mb-2">Tare/Zero Change (%)</label>
                 <input
                   type="number"
-                  value={formData.tareChange}
+                  value={formData.tareChange || calculatedTareChange}
                   onChange={(e) => handleInputChange('tareChange', e.target.value)}
                   placeholder="Enter tare change %"
                   className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -356,7 +347,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-200 mb-4">Span Calibration</h3>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Old Span</label>
@@ -385,7 +376,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
                 <label className="block text-sm font-medium text-slate-300 mb-2">Span Change (%)</label>
                 <input
                   type="number"
-                  value={formData.spanChange}
+                  value={formData.spanChange || calculatedSpanChange}
                   onChange={(e) => handleInputChange('spanChange', e.target.value)}
                   placeholder="Enter span change %"
                   className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -416,7 +407,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-200 mb-4">Load Cell Tests</h3>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">LC mV@Zero - mV</label>
@@ -446,7 +437,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-200 mb-4">Belt & Speed Tests</h3>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Belt Speed - m/s</label>
@@ -499,7 +490,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-200 mb-4">System Tests</h3>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Totaliser As Left - t</label>
@@ -575,7 +566,7 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-200 mb-4">Comments & Recommendations</h3>
-            
+
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">Comments</label>
               <textarea
@@ -608,8 +599,8 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
   if (!isOpen) return null;
 
   return (
-    <Modal 
-      title="Manual Calibration Report" 
+    <Modal
+      title="Manual Calibration Report"
       onClose={handleClose}
       size="max"
     >
@@ -652,11 +643,10 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                  activeTab === tab.id
-                    ? 'text-blue-400 border-blue-400 bg-blue-900/20'
-                    : 'text-slate-400 border-transparent hover:text-slate-300 hover:bg-slate-800/50'
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id
+                  ? 'text-blue-400 border-blue-400 bg-blue-900/20'
+                  : 'text-slate-400 border-transparent hover:text-slate-300 hover:bg-slate-800/50'
+                  }`}
               >
                 <tab.icon size={16} />
                 {tab.label}
@@ -673,21 +663,21 @@ export const ManualCalibrationModal = ({ isOpen, onClose, onSaveCalibrationData,
         {/* Action Buttons */}
         <div className="flex justify-between gap-3 pt-4 border-t border-slate-700">
           <div className="text-sm text-slate-400">
-            {formData.fileName && (
+            {calculatedFileName && (
               <span className="flex items-center gap-2">
                 <Icons.FileText size={16} />
-                {formData.fileName}
+                {calculatedFileName}
               </span>
             )}
           </div>
           <div className="flex gap-3">
-            <Button 
-              onClick={handleClose} 
+            <Button
+              onClick={handleClose}
               variant="secondary"
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={handleSave}
               className="flex items-center gap-2"
             >

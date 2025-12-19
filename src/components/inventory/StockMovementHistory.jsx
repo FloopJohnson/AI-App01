@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Icons } from '../../constants/icons';
-import { getStockMovementHistory } from '../../services/inventoryService';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 
@@ -130,8 +129,8 @@ export const StockMovementHistory = () => {
                                         <td className="px-4 py-3 text-slate-300">{location?.name || 'Unknown'}</td>
                                         <td className="px-4 py-3 text-right">
                                             <span className={`font-mono font-bold ${movement.quantityDelta > 0 ? 'text-emerald-400' :
-                                                    movement.quantityDelta < 0 ? 'text-red-400' :
-                                                        'text-slate-400'
+                                                movement.quantityDelta < 0 ? 'text-red-400' :
+                                                    'text-slate-400'
                                                 }`}>
                                                 {movement.quantityDelta > 0 ? '+' : ''}{movement.quantityDelta}
                                             </span>

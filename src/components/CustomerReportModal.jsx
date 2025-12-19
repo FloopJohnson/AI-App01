@@ -252,13 +252,6 @@ export const CustomerReportModal = ({
         XLSX.writeFile(wb, fileName);
     };
 
-    // Helper for operational status text
-    const getStatusText = (opStatus) => {
-        if (opStatus === 'Down') return 'DOWN/CRITICAL';
-        if (opStatus === 'Warning') return 'WARNING';
-        return 'OPERATIONAL';
-    };
-
     // Helper for preview status text and color (STRICTLY OPERATION STATUS)
     const getPreviewStatus = (item) => {
         if (item.opStatus === 'Down') return 'DOWN/CRITICAL';

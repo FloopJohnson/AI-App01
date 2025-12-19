@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Modal, Button } from './UIComponents';
 import { Icons } from '../constants/icons';
 import { formatDate } from '../utils/helpers';
-import { getExpiryStatus, getStatusColorClasses } from '../utils/employeeUtils';
+import { getExpiryStatus } from '../utils/employeeUtils';
 import { INDUCTION_CATEGORIES, getCategoryColors, getInductionLabel, getCategoryIcon } from '../constants/inductionCategories';
 
 // Define the Roles based on professional standards
@@ -800,7 +800,7 @@ export const EmployeeManager = ({ isOpen, onClose, employees, sites, onAddEmploy
                                                                             className="text-red-400 hover:text-red-300"
                                                                             onClick={(e) => {
                                                                                 e.stopPropagation();
-                                                                                if (!window.confirm(`Are you sure you want to delete the induction for \"${ind.name}\"?`)) return;
+                                                                                if (!window.confirm(`Are you sure you want to delete the induction for "${ind.name}"?`)) return;
                                                                                 const updatedInductions = selectedEmp.inductions.filter(i => i.id !== ind.id);
                                                                                 onUpdateEmployee(selectedEmp.id, { inductions: updatedInductions });
                                                                                 setSelectedEmp({ ...selectedEmp, inductions: updatedInductions });

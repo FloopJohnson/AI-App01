@@ -1,6 +1,6 @@
 // Category Management Service
 import { db } from '../firebase';
-import { collection, doc, setDoc, deleteDoc, onSnapshot, getDocs, query, where, writeBatch } from 'firebase/firestore';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, writeBatch } from 'firebase/firestore';
 
 export const addCategory = async (categoryName, type = 'part') => {
     try {

@@ -65,12 +65,6 @@ const getDisplayLocation = (site) => {
 };
 
 export function App() {
-  // Check for PDF Dev Mode
-  const searchParams = new URLSearchParams(window.location.search);
-  if (searchParams.get('mode') === 'pdf') {
-    return <DevPDFViewer />;
-  }
-
   // Force HMR update
   const {
     sites, selectedSiteId, setSelectedSiteId, selectedSite,
@@ -133,7 +127,7 @@ export function App() {
   // Universal Action Wizard State
   const [wizardAction, setWizardAction] = useState(null); // 'analytics', 'report', 'specs'
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
-  const [isEmployeeManagerOpen, setIsEmployeeManagerOpen] = useState(false);
+
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
 
   const toggleCardExpansion = (e, siteId) => {
@@ -154,23 +148,7 @@ export function App() {
   };
 
 
-  // Calculate count of certifications/inductions needing attention
-  const complianceIssuesCount = useMemo(() => {
-    let count = 0;
-    employees.forEach(emp => {
-      // Check Certifications
-      (emp.certifications || []).forEach(c => {
-        const status = getExpiryStatus(c.expiry);
-        if (status === 'expired' || status === 'warning') count++;
-      });
-      // Check Inductions
-      (emp.inductions || []).forEach(i => {
-        const status = getExpiryStatus(i.expiry);
-        if (status === 'expired' || status === 'warning') count++;
-      });
-    });
-    return count;
-  }, [employees]);
+
 
 
 
@@ -464,28 +442,7 @@ export function App() {
     }
   };
 
-  const handleDownloadData = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const filename = `${year}-${month}-${day}_MaintTrack_${hours}-${minutes}-${seconds}.json`;
 
-    const dataStr = JSON.stringify(sites, null, 2); // Pretty print for better readability
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
 
   const performBulkService = () => {
     if (selectedRowIds.size === 0) return;
@@ -654,10 +611,7 @@ export function App() {
     return sortConfig.direction === 'ascending' ? <Icons.SortAsc /> : <Icons.SortDesc />;
   };
 
-  const handleLogoUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) { const reader = new FileReader(); reader.onloadend = () => setSiteForm(prev => ({ ...prev, logo: reader.result })); reader.readAsDataURL(file); }
-  };
+
 
   const startEditingNote = (note) => {
     setEditingNoteId(note.id);
@@ -668,6 +622,12 @@ export function App() {
     setEditingNoteId(null);
     setEditNoteContent({ content: '', author: '' });
   };
+
+  // Check for PDF Dev Mode (after all hooks per Rules of Hooks)
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.get('mode') === 'pdf') {
+    return <DevPDFViewer />;
+  }
 
   // --- REFACTORED SPECS CONTENT TO AVOID NESTING ERRORS ---
   const specsPanelContent = useMemo(() => {

@@ -110,13 +110,13 @@ const styles = StyleSheet.create({
   }
 });
 
-const MasterListPDF = ({ 
-  site, 
-  serviceData, 
-  rollerData, 
-  specData, 
-  showArchived, 
-  generatedDate 
+const MasterListPDF = ({
+  site,
+  serviceData,
+  rollerData,
+  specData,
+  showArchived,
+  generatedDate
 }) => {
   // Combine and filter data
   const allAssets = [...serviceData, ...rollerData].filter(asset => {
@@ -124,63 +124,53 @@ const MasterListPDF = ({
     return true;
   }).map(asset => {
     // Find matching spec data for each asset
-    const spec = specData.find(s => 
-      s.weigher === asset.weigher || 
-      s.altCode === asset.code || 
+    const spec = specData.find(s =>
+      s.weigher === asset.weigher ||
+      s.altCode === asset.code ||
       s.weigher === asset.code
     );
-    
+
     return {
       ...asset,
       spec: spec || {}
     };
   });
 
-  const getStatusStyle = (remaining) => {
-    if (remaining < 0) return styles.statusOverdue;
-    if (remaining < 30) return styles.statusDueSoon;
-    return styles.statusOperational;
-  };
 
-  const getOpStatusStyle = (opStatus) => {
-    if (opStatus === 'Down') return styles.statusDown;
-    if (opStatus === 'Warning') return styles.statusWarning;
-    return {};
-  };
 
   const formatSpecData = (spec) => {
     if (!spec) return '-';
-    
+
     const parts = [];
     if (spec.loadCellBrand) parts.push(spec.loadCellBrand);
     if (spec.loadCellSize) parts.push(spec.loadCellSize);
     if (spec.loadCellSensitivity) parts.push(spec.loadCellSensitivity);
-    
+
     return parts.length > 0 ? parts.join('\n') : '-';
   };
 
   const formatBilletInfo = (spec) => {
     if (!spec) return '-';
-    
+
     const parts = [];
     if (spec.billetWeightType) parts.push(spec.billetWeightType);
     if (spec.billetWeightSize) parts.push(spec.billetWeightSize);
-    
+
     return parts.length > 0 ? parts.join('\n') : '-';
   };
 
   const formatRollerDimensions = (spec) => {
     if (!spec) return '-';
-    
+
     // Extract plain text from rollDims, removing any HTML, input fields, or React components
     let rollDims = spec.rollDims || '-';
-    
+
     // Handle different data types
     if (typeof rollDims === 'object' && rollDims !== null) {
       // If it's an object, try to extract value property or stringify
       rollDims = rollDims.value || rollDims.props?.value || JSON.stringify(rollDims);
     }
-    
+
     if (typeof rollDims === 'string') {
       // Remove HTML tags, React component markers, and input field indicators
       rollDims = rollDims
@@ -197,12 +187,12 @@ const MasterListPDF = ({
         .replace(/\s+/g, ' ') // Normalize whitespace
         .trim();
     }
-    
+
     // Final cleanup - if still looks like code, return a default
     if (rollDims && (rollDims.includes('<') || rollDims.includes('{') || rollDims.includes('props') || rollDims.includes('Editable'))) {
       return '240mm x 120mm'; // Default fallback
     }
-    
+
     return rollDims || '-';
   };
 
@@ -212,12 +202,12 @@ const MasterListPDF = ({
         // Calculate how many rows fit per page (approximately 25 rows per page for landscape)
         const rowsPerPage = 25;
         const pages = [];
-        
+
         for (let i = 0; i < allAssets.length; i += rowsPerPage) {
           const pageAssets = allAssets.slice(i, i + rowsPerPage);
           const pageNumber = Math.floor(i / rowsPerPage) + 1;
           const totalPages = Math.ceil(allAssets.length / rowsPerPage);
-          
+
           pages.push(
             <Page key={`page-${pageNumber}`} size="A4" orientation="landscape" style={styles.page}>
               <View style={styles.section}>
@@ -296,7 +286,7 @@ const MasterListPDF = ({
             </Page>
           );
         }
-        
+
         return pages;
       })()}
     </Document>

@@ -107,7 +107,7 @@ export class BaseRepository {
                 // Update existing document
                 docId = data.id;
                 docRef = doc(db, this.collectionName, docId);
-                const { id, createdAt, ...restData } = data;
+                const { id: _id, createdAt: _createdAt, ...restData } = data;
                 docData = {
                     ...restData,
                     updatedAt: now

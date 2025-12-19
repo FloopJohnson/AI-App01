@@ -95,8 +95,6 @@ export const StockOverview = ({ onAdjustStock }) => {
         });
     }, [parts, inventory, serializedAssets, locations]);
 
-    const formatCurrency = (cents) => `$${(cents / 100).toFixed(2)}`;
-
     if (loading) {
         return <div className="flex items-center justify-center h-64 text-slate-400">Loading stock overview...</div>;
     }

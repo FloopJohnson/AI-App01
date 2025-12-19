@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Icons } from '../constants/icons';
 
 export const ToDoWidget = ({ todos, onAdd, onUpdate, onDelete }) => {
@@ -10,7 +10,7 @@ export const ToDoWidget = ({ todos, onAdd, onUpdate, onDelete }) => {
     const adjustHeight = (el) => {
         if (!el) return;
         el.style.height = 'auto';
-        el.style.height = `${el.scrollHeight}px`;
+        el.style.height = `${el.scrollHeight} px`;
     };
 
     const handleSubmit = () => {
@@ -45,17 +45,17 @@ export const ToDoWidget = ({ todos, onAdd, onUpdate, onDelete }) => {
                         <div className="flex gap-3 items-start">
                             <button
                                 onClick={() => onUpdate(todo.id, { completed: !todo.completed })}
-                                className={`mt-1 flex-shrink-0 w-5 h-5 rounded border flex items-center justify-center transition-colors ${todo.completed
-                                    ? 'bg-green-500/20 border-green-500 text-green-500'
-                                    : 'border-slate-600 hover:border-cyan-500 text-transparent'
-                                    }`}
+                                className={`mt - 1 flex - shrink - 0 w - 5 h - 5 rounded border flex items - center justify - center transition - colors ${todo.completed
+                                        ? 'bg-green-500/20 border-green-500 text-green-500'
+                                        : 'border-slate-600 hover:border-cyan-500 text-transparent'
+                                    } `}
                             >
                                 <Icons.CheckCircle size={14} />
                             </button>
 
                             <textarea
-                                className={`w-full bg-transparent resize-none outline-none text-sm transition-colors ${todo.completed ? 'text-slate-500 line-through' : 'text-slate-300'
-                                    }`}
+                                className={`w - full bg - transparent resize - none outline - none text - sm transition - colors ${todo.completed ? 'text-slate-500 line-through' : 'text-slate-300'
+                                    } `}
                                 value={todo.content}
                                 rows={1}
                                 onChange={(e) => {

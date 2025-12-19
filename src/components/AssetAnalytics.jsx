@@ -505,7 +505,7 @@ export const AssetAnalyticsModal = ({ asset, isOpen, onClose, onSaveReport, onDe
     const [editCalibrationModalOpen, setEditCalibrationModalOpen] = useState(false);
     const [editingReport, setEditingReport] = useState(null);
     const [isAddMenuOpen, setIsAddMenuOpen] = useState(false); // Add state for dropdown
-    const { selectedReportIds, toggleReportSelection, clearReportSelections } = useFilterContext();
+    const { selectedReportIds, toggleReportSelection } = useFilterContext();
 
     const mountedRef = useRef(true); // NEW: To track if component is mounted
 
@@ -529,8 +529,8 @@ export const AssetAnalyticsModal = ({ asset, isOpen, onClose, onSaveReport, onDe
         comments: ''
     }));
 
-    const [sortColumn, setSortColumn] = useState('date');
-    const [sortDirection, setSortDirection] = useState('desc');
+    const [sortColumn] = useState('date');
+    const [sortDirection] = useState('desc');
 
     if (!isOpen || !asset) return null;
 
@@ -560,15 +560,6 @@ export const AssetAnalyticsModal = ({ asset, isOpen, onClose, onSaveReport, onDe
         onSaveReport(asset.id, newReport);
         if (mountedRef.current) setShowAddReport(false); // Only update if mounted
         if (mountedRef.current) setFormData({ date: new Date().toISOString().split('T')[0], technician: '', fileName: '', tareChange: '', spanChange: '', zeroMV: '', spanMV: '', speed: '', throughput: '', comments: '' }); // Only update if mounted
-    };
-
-    const handleSort = (column) => {
-        if (sortColumn === column) {
-            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-        } else {
-            setSortColumn(column);
-            setSortDirection('asc');
-        }
     };
 
     const sortedReports = [...reports].sort((a, b) => {
@@ -903,7 +894,7 @@ ${JSON.stringify(cleanReports, null, 2)}
                                             type="file"
                                             accept=".pdf"
                                             className="hidden"
-                                            onChange={(e) => {
+                                            onChange={() => {
                                                 setIsAddMenuOpen(false);
                                                 setShowAddReport(true); // Re-using existing Upload handling via existing "Log Service Report" modal which has PDF logic
                                                 // Or should I extract the handleFileUpload?
