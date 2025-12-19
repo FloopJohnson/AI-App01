@@ -435,6 +435,31 @@ export const ProductCatalogModal = ({ isOpen, onClose, onSuccess, editingProduct
                                 </div>
                             </div>
 
+                            {/* Calculated Margin Display - Show when manually entering list price */}
+                            {listPriceSource === 'MANUAL' && formData.listPrice && parseFloat(formData.listPrice) > 0 && (
+                                <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-slate-400">Calculated Margin:</span>
+                                        <span className={`text-lg font-bold ${(() => {
+                                            const activeCost = costType === 'CALCULATED' ? bomCost / 100 : parseFloat(formData.manualCost || 0);
+                                            const list = parseFloat(formData.listPrice) || 0;
+                                            const margin = list === 0 ? 0 : ((list - activeCost) / list * 100);
+                                            return margin >= formData.targetMarginPercent ? 'text-emerald-400' : 'text-amber-400';
+                                        })()}`}>
+                                            {(() => {
+                                                const activeCost = costType === 'CALCULATED' ? bomCost / 100 : parseFloat(formData.manualCost || 0);
+                                                const list = parseFloat(formData.listPrice) || 0;
+                                                if (list === 0) return '0.0%';
+                                                return ((list - activeCost) / list * 100).toFixed(1) + '%';
+                                            })()}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-slate-400 mt-1">
+                                        Based on {costType === 'CALCULATED' ? `BOM cost $${(bomCost / 100).toFixed(2)}` : `manual cost $${parseFloat(formData.manualCost || 0).toFixed(2)}`}
+                                    </p>
+                                </div>
+                            )}
+
                             {/* List Price Source Toggle */}
                             <ListPriceToggle
                                 listPriceSource={listPriceSource}

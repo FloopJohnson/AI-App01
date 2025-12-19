@@ -3,6 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Icons } from '../../constants/icons';
 import { getLowestSupplierPrice } from '../../services/partPricingService';
+import { forecastPartCost } from '../../services/costingService';
 
 export const PartCatalogTable = ({ onAddPart, onEditPart }) => {
     const [parts, setParts] = useState([]);
@@ -11,6 +12,7 @@ export const PartCatalogTable = ({ onAddPart, onEditPart }) => {
     const [loading, setLoading] = useState(true);
     const [viewingPart, setViewingPart] = useState(null);
     const [lowestPrices, setLowestPrices] = useState({});
+    const [confidenceLevels, setConfidenceLevels] = useState({});
 
     // Real-time listener for parts catalog
     useEffect(() => {
@@ -52,6 +54,30 @@ export const PartCatalogTable = ({ onAddPart, onEditPart }) => {
 
         if (parts.length > 0) {
             loadLowestPrices();
+        }
+    }, [parts]);
+
+    // Load forecast confidence for parts using PROJECTED source
+    useEffect(() => {
+        const loadConfidence = async () => {
+            const confidence = {};
+            for (const part of parts) {
+                if (part.id && part.costPriceSource === 'PROJECTED') {
+                    try {
+                        const forecast = await forecastPartCost(part.id, new Date());
+                        if (forecast) {
+                            confidence[part.id] = forecast.confidence;
+                        }
+                    } catch (err) {
+                        console.error(`Error loading confidence for ${part.id}:`, err);
+                    }
+                }
+            }
+            setConfidenceLevels(confidence);
+        };
+
+        if (parts.length > 0) {
+            loadConfidence();
         }
     }, [parts]);
 
@@ -189,6 +215,11 @@ export const PartCatalogTable = ({ onAddPart, onEditPart }) => {
                                     Margin {getSortIcon('actualMarginPercent')}
                                 </div>
                             </th>
+                            <th className="px-4 py-3 text-center cursor-pointer hover:bg-slate-800 transition-colors" onClick={() => handleSort('costPriceSource')}>
+                                <div className="flex items-center justify-center gap-2">
+                                    Confidence {getSortIcon('costPriceSource')}
+                                </div>
+                            </th>
                             <th className="px-4 py-3 text-center">Type</th>
                             <th className="px-4 py-3 text-center">Actions</th>
                         </tr>
@@ -196,7 +227,7 @@ export const PartCatalogTable = ({ onAddPart, onEditPart }) => {
                     <tbody className="divide-y divide-slate-700">
                         {filteredAndSortedParts.length === 0 ? (
                             <tr>
-                                <td colSpan="8" className="px-4 py-8 text-center text-slate-400">
+                                <td colSpan="9" className="px-4 py-8 text-center text-slate-400">
                                     {searchTerm ? 'No parts match your search' : 'No parts in catalog. Add your first part to get started.'}
                                 </td>
                             </tr>

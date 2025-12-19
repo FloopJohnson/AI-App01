@@ -78,7 +78,8 @@ import {
     Box,
     Calculator,
     Edit3,
-    Trash2
+    Trash2,
+    TrendingUp
 } from 'lucide-react';
 
 export const Icons = {
@@ -161,5 +162,6 @@ export const Icons = {
     Box,
     Calculator,
     Edit3,
-    Trash2
+    Trash2,
+    TrendingUp
 };

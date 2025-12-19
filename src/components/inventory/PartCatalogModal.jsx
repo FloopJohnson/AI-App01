@@ -509,110 +509,24 @@ export const PartCatalogModal = ({ isOpen, onClose, editingPart = null }) => {
                             />
                         </div>
 
-                        {/* Cost Price Source & Pricing */}
-                        <div className="space-y-4">
-                            {/* Cost Price Source Toggle */}
-                            {editingPart && (
-                                <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-                                    <label className="block text-sm font-medium text-slate-300 mb-3">
-                                        Cost Price Source
-                                    </label>
-                                    <div className="space-y-3">
-                                        <label className="flex items-center gap-3 cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                name="costPriceSource"
-                                                value="MANUAL"
-                                                checked={formData.costPriceSource === 'MANUAL'}
-                                                onChange={(e) => setFormData(prev => ({ ...prev, costPriceSource: e.target.value }))}
-                                                className="w-4 h-4 text-cyan-600"
-                                            />
-                                            <span className="text-white">Manual Entry</span>
-                                        </label>
-                                        <label className="flex items-center gap-3 cursor-pointer">
-                                            <input
-                                                type="radio"
-                                                name="costPriceSource"
-                                                value="SUPPLIER_LOWEST"
-                                                checked={formData.costPriceSource === 'SUPPLIER_LOWEST'}
-                                                onChange={(e) => setFormData(prev => ({ ...prev, costPriceSource: e.target.value }))}
-                                                className="w-4 h-4 text-cyan-600"
-                                            />
-                                            <span className="text-white">Lowest Supplier Price</span>
-                                        </label>
-                                    </div>
-
-                                    {/* Price Comparison */}
-                                    <div className="mt-4 pt-4 border-t border-slate-600 space-y-2 text-sm">
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">Manual Cost:</span>
-                                            <span className="text-white font-mono">
-                                                {formData.costPrice ? `$${parseFloat(formData.costPrice).toFixed(2)}` : '--'}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">Lowest Supplier:</span>
-                                            <span className="text-white font-mono">
-                                                {lowestSupplierPrice ? (
-                                                    <>
-                                                        ${(lowestSupplierPrice.costPrice / 100).toFixed(2)}
-                                                        <span className="text-slate-500 ml-2">({lowestSupplierPrice.supplierName})</span>
-                                                    </>
-                                                ) : '--'}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between pt-2 border-t border-slate-600">
-                                            <span className="text-cyan-400 font-medium">Active Cost:</span>
-                                            <span className="text-cyan-400 font-bold font-mono">
-                                                {formData.costPriceSource === 'SUPPLIER_LOWEST' && lowestSupplierPrice
-                                                    ? `$${(lowestSupplierPrice.costPrice / 100).toFixed(2)}`
-                                                    : formData.costPrice ? `$${parseFloat(formData.costPrice).toFixed(2)}` : '--'}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Cost and List Price Inputs */}
-                            <div className="grid grid-cols-2 gap-4">
-                                {/* Manual Cost Price - Only show when using manual entry */}
-                                {(!editingPart || formData.costPriceSource === 'MANUAL') && (
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-300 mb-1">
-                                            {editingPart ? 'Manual Cost Price ($)' : 'Cost Price ($)'}
-                                        </label>
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            step="0.01"
-                                            value={formData.costPrice}
-                                            onChange={(e) => setFormData(prev => ({ ...prev, costPrice: e.target.value }))}
-                                            className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                                            placeholder="0.00"
-                                        />
-                                    </div>
-                                )}
-
-                                {/* List Price - Only show if saleable */}
-                                {formData.isSaleable && (
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-300 mb-1">
-                                            List Price ($)
-                                        </label>
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            step="0.01"
-                                            value={formData.listPrice}
-                                            onChange={(e) => setFormData(prev => ({ ...prev, listPrice: e.target.value }))}
-                                            disabled={listPriceSource === 'CALCULATED'}
-                                            className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                                            placeholder="0.00"
-                                        />
-                                    </div>
-                                )}
+                        {/* List Price - Only show if saleable */}
+                        {formData.isSaleable && (
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-1">
+                                    List Price ($)
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    value={formData.listPrice}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, listPrice: e.target.value }))}
+                                    disabled={listPriceSource === 'CALCULATED'}
+                                    className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    placeholder="0.00"
+                                />
                             </div>
-                        </div>
+                        )}
 
                         {/* List Price Source Toggle - Only show if saleable */}
                         {formData.isSaleable && (

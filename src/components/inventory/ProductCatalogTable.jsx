@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Icons } from '../../constants/icons';
 import { deleteProduct } from '../../services/productService';
@@ -34,6 +34,7 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
     const [partCatalogVersion, setPartCatalogVersion] = useState(0);
     const [fastenerCatalogVersion, setFastenerCatalogVersion] = useState(0);
     const [productCatalogVersion, setProductCatalogVersion] = useState(0);
+    const [labourRateVersion, setLabourRateVersion] = useState(0);
 
     // Load products from Firestore
     useEffect(() => {
@@ -66,6 +67,16 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
         return () => unsubscribe();
     }, []);
 
+    // Listen to labour rate changes to trigger cost recalculation
+    useEffect(() => {
+        const labourRateDoc = doc(db, 'app_settings', 'labour_rate');
+        const unsubscribe = onSnapshot(labourRateDoc, () => {
+            setLabourRateVersion(prev => prev + 1);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
     // Load manufacturing costs for all products
     useEffect(() => {
         const loadCosts = async () => {
@@ -85,7 +96,7 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
         if (products.length > 0) {
             loadCosts();
         }
-    }, [products, refreshTrigger, partCatalogVersion, fastenerCatalogVersion, productCatalogVersion]);
+    }, [products, refreshTrigger, partCatalogVersion, fastenerCatalogVersion, productCatalogVersion, labourRateVersion]);
 
     const handleDelete = async (product) => {
         if (!confirm(`Delete product "${product.name}"? This cannot be undone.`)) {

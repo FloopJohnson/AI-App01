@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 import { Icons } from '../../constants/icons';
 import {
     getPricingForPart,
@@ -7,6 +9,7 @@ import {
     deletePricing,
     checkDuplicatePricing
 } from '../../services/partPricingService';
+import { calculateLinearTrend, forecastCostAtDate } from '../../utils/costForecasting';
 
 export const PartPricingTab = ({ part, suppliers }) => {
     const [pricingEntries, setPricingEntries] = useState([]);
@@ -22,12 +25,20 @@ export const PartPricingTab = ({ part, suppliers }) => {
         notes: ''
     });
 
+    // Forecasting state
+    const [costPriceSource, setCostPriceSource] = useState('MANUAL');
+    const [trendData, setTrendData] = useState(null);
+    const [hasSufficientHistory, setHasSufficientHistory] = useState(false);
+    const [manualCostPrice, setManualCostPrice] = useState('');
+
     // Load pricing entries
     useEffect(() => {
         if (part?.id) {
             loadPricing();
+            setCostPriceSource(part.costPriceSource || 'MANUAL');
+            setManualCostPrice((part.costPrice / 100).toFixed(2));
         }
-    }, [part?.id]);
+    }, [part?.id, part?.costPrice]);
 
     const loadPricing = async () => {
         try {
@@ -139,6 +150,81 @@ export const PartPricingTab = ({ part, suppliers }) => {
         });
         setEditingId(null);
         setError('');
+    };
+
+    // Calculate trend data when pricing history changes
+    useEffect(() => {
+        const calculateTrend = async () => {
+            if (pricingEntries.length >= 2) {
+                setHasSufficientHistory(true);
+
+                const trend = calculateLinearTrend(pricingEntries.map(p => ({
+                    date: new Date(p.effectiveDate),
+                    cost: p.costPrice
+                })));
+
+                if (trend) {
+                    // Calculate slope per month (trend.slope is per millisecond)
+                    const msPerMonth = 30 * 24 * 60 * 60 * 1000;
+                    const slopePerMonth = trend.slope * msPerMonth;
+
+                    // Forecast for today
+                    const today = new Date();
+                    const forecastToday = forecastCostAtDate(pricingEntries, today);
+
+                    // Forecast 6 months from today
+                    const sixMonthsFromNow = new Date();
+                    sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+                    const forecast6Months = forecastCostAtDate(pricingEntries, sixMonthsFromNow);
+
+                    setTrendData({
+                        slopePerMonth,
+                        confidence: trend.r2,
+                        forecastToday: forecastToday?.forecastedCost || 0,
+                        forecast6Months: forecast6Months?.forecastedCost || 0
+                    });
+                }
+            } else {
+                setHasSufficientHistory(false);
+                setTrendData(null);
+            }
+        };
+
+        calculateTrend();
+    }, [pricingEntries]);
+
+    // Handle cost source change
+    const handleCostSourceChange = async (e) => {
+        const newSource = e.target.value;
+        setCostPriceSource(newSource);
+
+        try {
+            // Determine which collection this part belongs to based on ID prefix
+            const collection = part.id.startsWith('fastener-') ? 'fastener_catalog' : 'part_catalog';
+
+            // Update part in database
+            await updateDoc(doc(db, collection, part.id), {
+                costPriceSource: newSource
+            });
+        } catch (err) {
+            console.error(`Error updating cost source:`, err);
+            setError('Failed to update cost source');
+        }
+    };
+
+    // Handle manual cost price change
+    const handleManualCostBlur = async () => {
+        try {
+            const collection = part.id.startsWith('fastener-') ? 'fastener_catalog' : 'part_catalog';
+            const costPriceCents = Math.round(parseFloat(manualCostPrice || 0) * 100);
+
+            await updateDoc(doc(db, collection, part.id), {
+                costPrice: costPriceCents
+            });
+        } catch (err) {
+            console.error('Error updating manual cost:', err);
+            setError('Failed to update cost price');
+        }
     };
 
     const formatCurrency = (cents) => {
@@ -354,6 +440,122 @@ export const PartPricingTab = ({ part, suppliers }) => {
                     ))
                 )}
             </div>
+
+            {/* Manual Cost Price Input */}
+            <div className="mb-6">
+                <h3 className="text-lg font-semibold text-white mb-3">Manual Cost Price</h3>
+                <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                        Cost Price ($)
+                    </label>
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={manualCostPrice}
+                        onChange={(e) => setManualCostPrice(e.target.value)}
+                        onBlur={handleManualCostBlur}
+                        className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        placeholder="0.00"
+                    />
+                    <p className="text-xs text-slate-400 mt-2">
+                        This is the manual cost price used when cost source is set to Manual Entry
+                    </p>
+                </div>
+            </div>
+
+            {/* Cost Price Source Settings */}
+            <div className="mb-6">
+                <h3 className="text-lg font-semibold text-white mb-3">Cost Price Source</h3>
+                <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700 space-y-3">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                            type="radio"
+                            name="costPriceSource"
+                            value="MANUAL"
+                            checked={costPriceSource === 'MANUAL'}
+                            onChange={handleCostSourceChange}
+                            className="w-4 h-4 text-cyan-600"
+                        />
+                        <div>
+                            <span className="text-white font-medium">Manual Entry</span>
+                            <p className="text-xs text-slate-400">Use manually entered cost price</p>
+                        </div>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                            type="radio"
+                            name="costPriceSource"
+                            value="SUPPLIER_LOWEST"
+                            checked={costPriceSource === 'SUPPLIER_LOWEST'}
+                            onChange={handleCostSourceChange}
+                            className="w-4 h-4 text-cyan-600"
+                        />
+                        <div>
+                            <span className="text-white font-medium">Supplier (Lowest Price)</span>
+                            <p className="text-xs text-slate-400">Automatically use lowest supplier price from history below</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            {/* Forecasted Trend Analysis - Always show when sufficient history */}
+            {hasSufficientHistory && trendData && (
+                <div className="mb-6 p-4 bg-purple-500/10 rounded-lg border border-purple-500/30">
+                    <div className="flex items-center gap-2 mb-3">
+                        <Icons.TrendingUp className="text-purple-400" size={20} />
+                        <h3 className="text-lg font-semibold text-white">Forecasted Trend Analysis</h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <p className="text-xs text-slate-400 mb-1">Cost Change (per month)</p>
+                            <p className={`text-lg font-bold ${trendData.slopePerMonth > 0 ? 'text-red-400' :
+                                trendData.slopePerMonth < 0 ? 'text-emerald-400' : 'text-slate-400'
+                                }`}>
+                                {trendData.slopePerMonth > 0 ? '+' : ''}
+                                ${(trendData.slopePerMonth / 100).toFixed(2)}
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="text-slate-400 text-xs mb-1">Confidence (R²)</div>
+                            <div className={`font-mono font-bold ${trendData.confidence >= 0.7 ? 'text-emerald-400' :
+                                trendData.confidence >= 0.3 ? 'text-amber-400' : 'text-red-400'
+                                }`}>
+                                {(trendData.confidence * 100).toFixed(1)}%
+                            </div>
+                        </div>
+
+                        <div>
+                            <p className="text-xs text-slate-400 mb-1">Current Day Forecast</p>
+                            <p className="text-lg font-bold text-cyan-400">
+                                ${(trendData.forecastToday / 100).toFixed(2)}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p className="text-xs text-slate-400 mb-1">Predicted Price (6 months)</p>
+                            <p className="text-lg font-bold text-white">
+                                ${(trendData.forecast6Months / 100).toFixed(2)}
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="text-slate-400 text-xs mb-1">Based On</div>
+                            <div className="text-white">
+                                {pricingEntries.length} data points
+                            </div>
+                        </div>
+                    </div>
+
+                    {trendData.confidence < 0.3 && (
+                        <div className="mt-3 p-2 bg-amber-500/10 border border-amber-500/30 rounded text-xs text-amber-300 flex items-start gap-2">
+                            <Icons.AlertTriangle size={14} className="flex-shrink-0 mt-0.5" />
+                            <span>Low confidence trend. System will fall back to manual cost price for calculations.</span>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

@@ -1,11 +1,48 @@
 // Costing Service - Core calculation engine for product and part costs
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { partCostHistoryRepository, productCompositionRepository, productCostHistoryRepository } from '../repositories';
 import { findEffectiveCost } from '../utils/dateHelpers';
 import { forecastCostAtDate } from '../utils/costForecasting';
 import { getLowestSupplierPrice } from './partPricingService';
 import { getLabourRate } from './settingsService';
+
+/**
+ * Forecast part cost at a target date using linear regression
+ * @description Fetches historical cost data from PartCostHistoryRepository and uses
+ * linear regression to predict future cost. Returns forecasted cost and confidence score.
+ * @param {string} partId - The part ID to forecast
+ * @param {Date|string} targetDate - Date to forecast for
+ * @returns {Promise<{forecastedCost: number, confidence: number}|null>} Forecast with R² confidence or null
+ * @example
+ * const forecast = await forecastPartCost('part-123', new Date('2026-06-01'));
+ * // returns { forecastedCost: 1350, confidence: 0.92 }
+ */
+export async function forecastPartCost(partId, targetDate) {
+    try {
+        const history = await partCostHistoryRepository.getCostHistory(partId);
+
+        if (!history || history.length < 2) {
+            console.warn(`[CostingService] Insufficient history for part ${partId} (need 2+ entries for forecasting)`);
+            return null;
+        }
+
+        const forecast = forecastCostAtDate(history, targetDate);
+
+        if (forecast) {
+            console.log(`[CostingService] Forecasted cost for ${partId}:`, {
+                forecastedCost: forecast.forecastedCost,
+                confidence: forecast.confidence.toFixed(2),
+                dataPoints: history.length
+            });
+        }
+
+        return forecast;
+    } catch (error) {
+        console.error('[CostingService] Error forecasting part cost:', error);
+        return null;
+    }
+}
 
 /**
  * Get the cost of a part at a specific date
@@ -43,6 +80,29 @@ export async function getPartCostAtDate(partId, date) {
             const itemData = catalogRef.docs[0].data();
 
             // Determine active cost based on costPriceSource
+            if (itemData.costPriceSource === 'PROJECTED') {
+                try {
+                    const forecast = await forecastPartCost(partId, date);
+
+                    if (forecast) {
+                        // Log warning if confidence is low, but still use projected cost
+                        if (forecast.confidence < 0.3) {
+                            console.warn(`[CostingService] Low confidence (${forecast.confidence.toFixed(2)}) for ${partId}, but using projected cost anyway`);
+                        } else {
+                            console.log(`[CostingService] Using projected cost for ${partId}:`,
+                                { cost: forecast.forecastedCost, confidence: forecast.confidence.toFixed(2) });
+                        }
+                        return forecast.forecastedCost;
+                    } else {
+                        console.warn(`[CostingService] No forecast available for ${partId}, falling back to manual cost`);
+                        return itemData.costPrice || 0;
+                    }
+                } catch (err) {
+                    console.warn(`[CostingService] Could not project cost for ${partId}, using manual cost:`, err);
+                    return itemData.costPrice || 0;
+                }
+            }
+
             if (itemData.costPriceSource === 'SUPPLIER_LOWEST') {
                 try {
                     const validSuppliers = itemData.suppliers || [];
@@ -132,9 +192,10 @@ export async function calculateProductCost(productId, date = new Date()) {
         let labourCost = 0;
         try {
             // Get product details to access labour time
-            const productRef = await getDocs(query(collection(db, 'products'), where('id', '==', productId)));
-            if (!productRef.empty) {
-                const productData = productRef.docs[0].data();
+            const productRef = doc(db, 'products', productId);
+            const productSnap = await getDoc(productRef);
+            if (productSnap.exists()) {
+                const productData = productSnap.data();
                 const labourHours = productData.labourHours || 0;
                 const labourMinutes = productData.labourMinutes || 0;
                 console.log('[CostingService] Labour data for product:', { productId, labourHours, labourMinutes });
