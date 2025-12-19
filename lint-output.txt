@@ -1,0 +1,404 @@
+﻿
+> maintenance-app@0.0.0 lint
+> eslint .
+
+
+C:\~Projects\AI-Quoting App - 01\src\App.jsx
+    79:5    error  'handleAddSite' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                       no-unused-vars
+    86:5    error  'dbPath' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                              no-unused-vars
+    86:13   error  'isDbReady' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                           no-unused-vars
+    86:24   error  'handleDatabaseSelected' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                              no-unused-vars
+    88:7    error  React Hook "useSiteContext" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                   react-hooks/rules-of-hooks
+    93:18   error  'handleAddEmployee' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                   no-unused-vars
+    94:21   error  'handleUpdateEmployee' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                no-unused-vars
+    95:21   error  'handleDeleteEmployee' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                no-unused-vars
+    96:7    error  React Hook "useGlobalData" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                    react-hooks/rules-of-hooks
+   122:7    error  React Hook "useUIContext" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                     react-hooks/rules-of-hooks
+   125:45   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                         react-hooks/rules-of-hooks
+   126:55   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                         react-hooks/rules-of-hooks
+   127:49   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                         react-hooks/rules-of-hooks
+   128:51   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                         react-hooks/rules-of-hooks
+   131:55   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render                                                                         react-hooks/rules-of-hooks
+   134:53   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   135:69   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   136:49   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   139:43   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   140:51   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   141:10   error  'isEmployeeManagerOpen' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                               no-unused-vars
+   141:33   error  'setIsEmployeeManagerOpen' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                            no-unused-vars
+   141:61   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   142:51   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   163:9    error  'complianceIssuesCount' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                               no-unused-vars
+   163:33   error  React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?           react-hooks/rules-of-hooks
+   188:23   error  'setIsRollerOnlyMode' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                 no-unused-vars
+   199:7    error  React Hook "useFilterContext" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+   201:11   error  'canUndo' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                             no-unused-vars
+   201:33   error  'lastActionDescription' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                               no-unused-vars
+   201:65   error  'canRedo' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                             no-unused-vars
+   201:87   error  'lastRedoActionDescription' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                           no-unused-vars
+   201:117  error  React Hook "useUndo" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?           react-hooks/rules-of-hooks
+   205:22   error  React Hook "useRef" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?            react-hooks/rules-of-hooks
+   206:3    error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?         react-hooks/rules-of-hooks
+   212:24   error  React Hook "useRef" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?            react-hooks/rules-of-hooks
+   253:53   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   254:71   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   255:71   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   256:65   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   257:65   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   260:51   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   261:47   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   264:45   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   265:57   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   268:57   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   269:57   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   270:49   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   271:67   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   272:61   error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?          react-hooks/rules-of-hooks
+   275:3    error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?         react-hooks/rules-of-hooks
+   299:25   error  React Hook "React.useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?     react-hooks/rules-of-hooks
+   300:25   error  React Hook "React.useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?     react-hooks/rules-of-hooks
+   310:3    error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?         react-hooks/rules-of-hooks
+   316:3    error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?         react-hooks/rules-of-hooks
+   327:3    error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?         react-hooks/rules-of-hooks
+   334:3    error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?         react-hooks/rules-of-hooks
+   472:9    error  'handleDownloadData' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                  no-unused-vars
+   662:9    error  'handleLogoUpload' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                    no-unused-vars
+   678:29   error  React Hook "useMemo" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?           react-hooks/rules-of-hooks
+  1471:126  error  'setIsAddSiteModalOpen' is not defined                                                                                                                                                              no-undef
+
+C:\~Projects\AI-Quoting App - 01\src\apps\CustomerPortal\CustomerApp.jsx
+   95:34  error  'forSite' is assigned a value but never used                                                            no-unused-vars
+  263:11  error  'handleViewSiteContacts' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\AssetAnalytics.jsx
+  508:55  error  'clearReportSelections' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  565:11  error  'handleSort' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u             no-unused-vars
+  906:56  error  'e' is defined but never used                                                                          no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\ContextWizardModal.jsx
+  12:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  10 |     useEffect(() => {
+  11 |         if (isOpen) {
+> 12 |             setSelectedSiteId('');
+     |             ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  13 |             setSearchTerm('');
+  14 |         }
+  15 |     }, [isOpen]);  react-hooks/set-state-in-effect
+
+C:\~Projects\AI-Quoting App - 01\src\components\CustomerReportModal.jsx
+  256:11  error  'getStatusText' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\DevPDFViewer.jsx
+   1:27  error  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                       no-unused-vars
+  14:7   error  'mockServiceReportData' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  74:12  error  'zoom' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                   no-unused-vars
+  74:18  error  'setZoom' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\EditCalibrationModal.jsx
+   62:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  60 |     if (report) {
+  61 |       const initialTechNames = report.technician ? report.technician.split(',').map(name => name.trim()) : [''];
+> 62 |       setTechNames(initialTechNames);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  63 |       
+  64 |       setFormData({
+  65 |         // Basic Info                                                          react-hooks/set-state-in-effect
+  121:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  119 |       const dateStr = date.replace(/-/g, '.');
+  120 |       const jobPart = jobNumber && jobCode ? `${jobNumber}-${jobCode}` : jobNumber || jobCode;
+> 121 |       setFormData(prev => ({
+      |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  122 |         ...prev,
+  123 |         fileName: `${dateStr}-CALR-${jobPart}.pdf`
+  124 |       }));                    react-hooks/set-state-in-effect
+  132:6  warning  React Hook useEffect has a missing dependency: 'formData'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/exhaustive-deps
+  141:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  139 |       if (!isNaN(oldValue) && !isNaN(newValue) && oldValue !== 0) {
+  140 |         const change = ((newValue - oldValue) / oldValue * 100).toFixed(2);
+> 141 |         setFormData(prev => ({ ...prev, tareChange: change }));
+      |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  142 |       }
+  143 |     }
+  144 |   }, [formData.oldTare, formData.newTare]);  react-hooks/set-state-in-effect
+  153:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  151 |       if (!isNaN(oldValue) && !isNaN(newValue) && oldValue !== 0) {
+  152 |         const change = ((newValue - oldValue) / oldValue * 100).toFixed(2);
+> 153 |         setFormData(prev => ({ ...prev, spanChange: change }));
+      |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  154 |       }
+  155 |     }
+  156 |   }, [formData.oldSpan, formData.newSpan]);  react-hooks/set-state-in-effect
+
+C:\~Projects\AI-Quoting App - 01\src\components\EmployeeManager.jsx
+    6:27   error  'getStatusColorClasses' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  803:152  error  Unnecessary escape character: \"                                                              no-useless-escape
+  803:165  error  Unnecessary escape character: \"                                                              no-useless-escape
+
+C:\~Projects\AI-Quoting App - 01\src\components\Login.jsx
+  17:18  error  'err' is defined but never used  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\ManualCalibrationModal.jsx
+  63:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  61 |       const jobPart = jobNumber && jobCode ? `${jobNumber}-${jobCode}` : jobNumber || jobCode;
+  62 |       const newFileName = `${dateStr}-CALR-${jobPart}.pdf`;
+> 63 |       setFormData(prev => ({
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  64 |         ...prev,
+  65 |         fileName: newFileName
+  66 |       }));                            react-hooks/set-state-in-effect
+  75:6  warning  React Hook useEffect has a missing dependency: 'formData'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react-hooks/exhaustive-deps
+  84:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  82 |       if (!isNaN(oldValue) && !isNaN(newValue) && oldValue !== 0) {
+  83 |         const change = ((newValue - oldValue) / oldValue * 100).toFixed(2);
+> 84 |         setFormData(prev => ({ ...prev, tareChange: change }));
+     |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  85 |       }
+  86 |     }
+  87 |   }, [formData.oldTare, formData.newTare]);  react-hooks/set-state-in-effect
+  96:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  94 |       if (!isNaN(oldValue) && !isNaN(newValue) && oldValue !== 0) {
+  95 |         const change = ((newValue - oldValue) / oldValue * 100).toFixed(2);
+> 96 |         setFormData(prev => ({ ...prev, spanChange: change }));
+     |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  97 |       }
+  98 |     }
+  99 |   }, [formData.oldSpan, formData.newSpan]);  react-hooks/set-state-in-effect
+
+C:\~Projects\AI-Quoting App - 01\src\components\MasterListPDF.jsx
+  139:9  error  'getStatusStyle' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u    no-unused-vars
+  145:9  error  'getOpStatusStyle' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\MasterListPDFPreview.jsx
+  79:9  error  'getStatusStyle' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u    no-unused-vars
+  85:9  error  'getStatusText' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+  91:9  error  'getOpStatusStyle' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  97:9  error  'getOpStatusText' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u   no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\ScheduleChartPDFPreview.jsx
+  143:82  error  'index' is defined but never used  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\SiteModals.jsx
+    5:10  error  'validateSiteForm' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+    5:28  error  'sanitizeInput' is defined but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+    6:10  error  'useGlobalData' is defined but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+   44:3   error  'onDelete' is defined but never used                                                     no-unused-vars
+   45:3   error  'onToggleStatus' is defined but never used                                               no-unused-vars
+   55:25  error  'sectionClass' is not defined                                                            no-undef
+   57:34  error  'labelClass' is not defined                                                              no-undef
+   60:36  error  'labelClass' is not defined                                                              no-undef
+   60:82  error  'inputClass' is not defined                                                              no-undef
+   61:36  error  'labelClass' is not defined                                                              no-undef
+   61:78  error  'inputClass' is not defined                                                              no-undef
+   67:33  error  'labelClass' is not defined                                                              no-undef
+   69:28  error  'inputClass' is not defined                                                              no-undef
+   96:35  error  'labelClass' is not defined                                                              no-undef
+   98:30  error  'inputClass' is not defined                                                              no-undef
+  117:37  error  'labelClass' is not defined                                                              no-undef
+  119:32  error  'inputClass' is not defined                                                              no-undef
+  137:37  error  'labelClass' is not defined                                                              no-undef
+  139:35  error  'inputClass' is not defined                                                              no-undef
+  166:37  error  'labelClass' is not defined                                                              no-undef
+  168:32  error  'inputClass' is not defined                                                              no-undef
+  189:37  error  'labelClass' is not defined                                                              no-undef
+  191:32  error  'inputClass' is not defined                                                              no-undef
+  209:37  error  'labelClass' is not defined                                                              no-undef
+  211:32  error  'inputClass' is not defined                                                              no-undef
+  234:37  error  'labelClass' is not defined                                                              no-undef
+  236:32  error  'inputClass' is not defined                                                              no-undef
+  270:33  error  'labelClass' is not defined                                                              no-undef
+  272:28  error  'inputClass' is not defined                                                              no-undef
+  281:25  error  'sectionClass' is not defined                                                            no-undef
+  284:31  error  'inputClass' is not defined                                                              no-undef
+  285:31  error  'inputClass' is not defined                                                              no-undef
+  287:32  error  'inputClass' is not defined                                                              no-undef
+  289:31  error  'inputClass' is not defined                                                              no-undef
+  290:31  error  'inputClass' is not defined                                                              no-undef
+  472:26  error  'inputClass' is not defined                                                              no-undef
+  479:29  error  'inputClass' is not defined                                                              no-undef
+
+C:\~Projects\AI-Quoting App - 01\src\components\ToDoWidget.jsx
+  1:27  error  'useEffect' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\admin\UserManagement.jsx
+  9:12  error  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\BOMEditor.jsx
+  24:12  error  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+  24:21  error  'setLoading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\PartCatalogModal.jsx
+   55:8  warning  React Hook useEffect has a missing dependency: 'formData.category'. Either include it or remove the dependency array                                       react-hooks/exhaustive-deps
+  126:8  warning  React Hook useEffect has a missing dependency: 'editingPart.suppliers'. Either include it or remove the dependency array                                   react-hooks/exhaustive-deps
+  189:8  warning  React Hook useEffect has missing dependencies: 'editingPart', 'formData.sku', and 'handleGenerateSKU'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\PartPricingTab.jsx
+  30:8  warning  React Hook useEffect has a missing dependency: 'loadPricing'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\SerializedAssetsView.jsx
+  2:34  error  'query' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  2:41  error  'where' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\StockMovementHistory.jsx
+  3:10  error  'getStockMovementHistory' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\StockOverview.jsx
+  98:11  error  'formatCurrency' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\StockTakeMode.jsx
+  42:8   warning  React Hook useEffect has a missing dependency: 'selectedLocation'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  74:23  error    '_' is defined but never used                                                                                        no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\inventory\SupplierManager.jsx
+  2:34  error  'query' is defined but never used. Allowed unused vars must match /^[A-Z_]/u               no-unused-vars
+  2:41  error  'where' is defined but never used. Allowed unused vars must match /^[A-Z_]/u               no-unused-vars
+  5:39  error  'linkPartToSupplier' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\reports\ServiceReportDocument.jsx
+  8:41  error  'data' is defined but never used  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\reports\ServiceReportForm.jsx
+   52:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  50 |     useEffect(() => {
+  51 |         if (initialData) {
+> 52 |             setFormData({
+     |             ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  53 |                 ...initialData,
+  54 |                 general: {
+  55 |                     ...initialData.general,                                                                                                                             react-hooks/set-state-in-effect
+  100:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+   98 |             try {
+   99 |                 localStorage.setItem(draftKey, JSON.stringify(storageData));
+> 100 |                 setDraftSaved(true);
+      |                 ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  101 |                 const timer = setTimeout(() => setDraftSaved(false), 2000);
+  102 |                 return () => clearTimeout(timer);
+  103 |             } catch (error) {  react-hooks/set-state-in-effect
+
+C:\~Projects\AI-Quoting App - 01\src\components\reports\tabs\GeneralTab.jsx
+  3:50  error  'site' is defined but never used  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\components\reports\tabs\IntegratorTab.jsx
+  67:43  error  'index' is defined but never used  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\context\AuthContext.jsx
+  8:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\~Projects\AI-Quoting App - 01\src\context\GlobalDataContext.jsx
+   54:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  52 |         );
+  53 |
+> 54 |         setLoading(false);
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  55 |
+  56 |         return () => {
+  57 |             unsubCustomers();  react-hooks/set-state-in-effect
+  120:8   warning  React Hook useEffect has missing dependencies: 'isRepairing' and 'sites'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/exhaustive-deps
+  410:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react-refresh/only-export-components
+
+C:\~Projects\AI-Quoting App - 01\src\context\SiteContext.jsx
+    4:10  error  'safelyLoadData' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                  no-unused-vars
+   38:13  error  'addUndoAction' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u          no-unused-vars
+   67:26  error  'e' is defined but never used                                                                          no-unused-vars
+   67:29  error  Empty block statement                                                                                  no-empty
+   96:52  error  'description' is assigned a value but never used                                                       no-unused-vars
+  175:58  error  'where' is not defined                                                                                 no-undef
+  176:41  error  'getDocs' is not defined                                                                               no-undef
+  616:11  error  'handleClearAllHistory' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\firebase.js
+   2:10  error  'getFirestore' is defined but never used. Allowed unused vars must match /^[A-Z_]/u        no-unused-vars
+  28:7   error  'analytics' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\repositories\BaseRepository.js
+  110:25  error  'id' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u         no-unused-vars
+  110:29  error  'createdAt' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\services\categoryService.js
+  3:46  error  'onSnapshot' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\src\services\inventoryService.js
+    9:5   error  'getDoc' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  392:81  error  'limit' is assigned a value but never used                                     no-unused-vars
+
+C:\~Projects\AI-Quoting App - 01\vite.config.js
+  7:32  error  'command' is defined but never used  no-unused-vars
+
+Γ£û 171 problems (163 errors, 8 warnings)
+
