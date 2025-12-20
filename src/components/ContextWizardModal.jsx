@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal } from './UIComponents';
 import { Icons } from '../constants/icons';
 
@@ -6,13 +6,8 @@ export const ContextWizardModal = ({ isOpen, onClose, sites, actionTitle, onComp
     const [selectedSiteId, setSelectedSiteId] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Reset when opening/closing
-    useEffect(() => {
-        if (isOpen) {
-            setSelectedSiteId('');
-            setSearchTerm('');
-        }
-    }, [isOpen]);
+    // No useEffect needed - component remounts when modal opens via key prop
+    // This ensures fresh state on each open without setState-in-effect
 
     if (!isOpen) return null;
 

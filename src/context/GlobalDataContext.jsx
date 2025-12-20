@@ -59,10 +59,11 @@ export const GlobalDataProvider = ({ children }) => {
     }, []);
 
     // Set loading to false after subscriptions are set up
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    /* eslint-disable react-hooks/set-state-in-effect */
     useEffect(() => {
         setLoading(false);
     }, []);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // --- AUTO-REPAIR ORPHANED SITES ---
     // This finds sites that have a 'customer' name string but no 'customerId' link

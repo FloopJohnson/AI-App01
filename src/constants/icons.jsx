@@ -79,7 +79,8 @@ import {
     Calculator,
     Edit3,
     Trash2,
-    TrendingUp
+    TrendingUp,
+    Filter
 } from 'lucide-react';
 
 export const Icons = {
@@ -163,5 +164,6 @@ export const Icons = {
     Calculator,
     Edit3,
     Trash2,
-    TrendingUp
+    TrendingUp,
+    Filter
 };

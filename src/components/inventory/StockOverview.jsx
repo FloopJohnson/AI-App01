@@ -5,6 +5,8 @@ import { Icons } from '../../constants/icons';
 
 export const StockOverview = ({ onAdjustStock }) => {
     const [parts, setParts] = useState([]);
+    const [fasteners, setFasteners] = useState([]);
+    const [products, setProducts] = useState([]);
     const [inventory, setInventory] = useState([]);
     const [serializedAssets, setSerializedAssets] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -14,7 +16,24 @@ export const StockOverview = ({ onAdjustStock }) => {
     // Real-time listeners
     useEffect(() => {
         const unsubParts = onSnapshot(collection(db, 'part_catalog'), (snap) => {
-            setParts(snap.docs.map(doc => doc.data()));
+            // Only show parts with stock tracking enabled
+            const partsList = snap.docs.map(doc => doc.data())
+                .filter(p => p.trackStock !== false);
+            setParts(partsList);
+        });
+
+        const unsubFasteners = onSnapshot(collection(db, 'fastener_catalog'), (snap) => {
+            // Only show fasteners with stock tracking enabled
+            const fastenersList = snap.docs.map(doc => doc.data())
+                .filter(f => f.trackStock !== false);
+            setFasteners(fastenersList);
+        });
+
+        const unsubProducts = onSnapshot(collection(db, 'products'), (snap) => {
+            // Only show products with stock tracking enabled
+            const productsList = snap.docs.map(doc => doc.data())
+                .filter(p => p.trackStock !== false);
+            setProducts(productsList);
         });
 
         const unsubInventory = onSnapshot(collection(db, 'inventory_state'), (snap) => {
@@ -32,6 +51,8 @@ export const StockOverview = ({ onAdjustStock }) => {
 
         return () => {
             unsubParts();
+            unsubFasteners();
+            unsubProducts();
             unsubInventory();
             unsubAssets();
             unsubLocations();
@@ -40,7 +61,10 @@ export const StockOverview = ({ onAdjustStock }) => {
 
     // Aggregate stock data
     const stockOverview = useMemo(() => {
-        return parts.map(part => {
+        // Combine parts, fasteners, and products
+        const allItems = [...parts, ...fasteners, ...products];
+
+        return allItems.map(part => {
             let totalQuantity = 0;
             const locationBreakdown = [];
 
@@ -93,7 +117,7 @@ export const StockOverview = ({ onAdjustStock }) => {
                 actualMarginPercent: actualMargin
             };
         });
-    }, [parts, inventory, serializedAssets, locations]);
+    }, [parts, fasteners, products, inventory, serializedAssets, locations]);
 
     if (loading) {
         return <div className="flex items-center justify-center h-64 text-slate-400">Loading stock overview...</div>;

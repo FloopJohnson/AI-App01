@@ -47,7 +47,8 @@ export const ServiceReportForm = ({ site, asset, employees = [], onClose, onSave
     });
 
     // --- LOAD DATA ON MOUNT ---
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // Intentionally setting state here to initialize form from initialData or localStorage draft
+    /* eslint-disable react-hooks/set-state-in-effect */
     useEffect(() => {
         if (initialData) {
             setFormData({
@@ -77,6 +78,7 @@ export const ServiceReportForm = ({ site, asset, employees = [], onClose, onSave
             }
         }
     }, [asset?.id, initialData, site?.logo]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // --- AUTO-SAVE DRAFT ---
     useEffect(() => {
@@ -109,6 +111,8 @@ export const ServiceReportForm = ({ site, asset, employees = [], onClose, onSave
     }, [formData, asset?.id, readOnly, initialData]);
 
     // Show draft saved indicator
+    // Intentionally setting state to show temporary UI feedback
+    /* eslint-disable react-hooks/set-state-in-effect */
     useEffect(() => {
         if (asset?.id && !readOnly && !initialData) {
             setDraftSaved(true);
@@ -116,6 +120,7 @@ export const ServiceReportForm = ({ site, asset, employees = [], onClose, onSave
             return () => clearTimeout(timer);
         }
     }, [formData, asset?.id, readOnly, initialData]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // --- HANDLERS ---
     const handleGeneralChange = (field, value) => {

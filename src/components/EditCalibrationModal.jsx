@@ -56,6 +56,8 @@ export const EditCalibrationModal = ({ isOpen, onClose, onUpdateCalibrationData,
   });
 
   // Initialize form with report data when report changes
+  // Intentionally setting state here to initialize form when editing a report
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (report) {
       const initialTechNames = report.technician ? report.technician.split(',').map(name => name.trim()) : [''];
@@ -111,6 +113,7 @@ export const EditCalibrationModal = ({ isOpen, onClose, onUpdateCalibrationData,
       });
     }
   }, [report]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Derived values calculated from form data
   const calculatedFileName = useMemo(() => {
@@ -705,8 +708,8 @@ export const EditCalibrationModal = ({ isOpen, onClose, onUpdateCalibrationData,
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id
-                    ? 'text-blue-400 border-blue-400 bg-blue-900/20'
-                    : 'text-slate-400 border-transparent hover:text-slate-300 hover:bg-slate-800/50'
+                  ? 'text-blue-400 border-blue-400 bg-blue-900/20'
+                  : 'text-slate-400 border-transparent hover:text-slate-300 hover:bg-slate-800/50'
                   }`}
               >
                 <tab.icon size={16} />

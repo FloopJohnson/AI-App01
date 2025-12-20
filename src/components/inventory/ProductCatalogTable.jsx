@@ -4,6 +4,8 @@ import { db } from '../../firebase';
 import { Icons } from '../../constants/icons';
 import { deleteProduct } from '../../services/productService';
 import { calculateProductCost } from '../../services/costingService';
+import { FilterPanel } from './categories/FilterPanel';
+import { useCategories } from '../../context/CategoryContext';
 
 /**
  * Format currency from cents to AUD string
@@ -35,6 +37,9 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
     const [fastenerCatalogVersion, setFastenerCatalogVersion] = useState(0);
     const [productCatalogVersion, setProductCatalogVersion] = useState(0);
     const [labourRateVersion, setLabourRateVersion] = useState(0);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [categoryFilters, setCategoryFilters] = useState([]);
+    const { categories } = useCategories();
 
     // Load products from Firestore
     useEffect(() => {
@@ -110,12 +115,35 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
         }
     };
 
-    // Filter products based on search term
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (product.category && product.category.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    // Helper to get category name by ID
+    const getCategoryName = (categoryId) => {
+        const category = categories.find(c => c.id === categoryId);
+        return category ? category.name : '';
+    };
+
+    // Filter products based on search term and category filters
+    let filteredProducts = products.filter(product => {
+        const searchLower = searchTerm.toLowerCase();
+        const categoryName = getCategoryName(product.categoryId)?.toLowerCase() || '';
+        const subcategoryName = getCategoryName(product.subcategoryId)?.toLowerCase() || '';
+        const legacyCategory = product.category?.toLowerCase() || '';
+
+        return product.name.toLowerCase().includes(searchLower) ||
+            product.sku.toLowerCase().includes(searchLower) ||
+            categoryName.includes(searchLower) ||
+            subcategoryName.includes(searchLower) ||
+            legacyCategory.includes(searchLower);
+    });
+
+    // Apply category filters
+    if (categoryFilters.length > 0) {
+        filteredProducts = filteredProducts.filter(product => {
+            if (!product.categoryId && !product.subcategoryId) return false;
+            return categoryFilters.some(filterId =>
+                filterId === product.categoryId || filterId === product.subcategoryId
+            );
+        });
+    }
 
     if (loading) {
         return (
@@ -132,17 +160,49 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
                 <div>
                     <h2 className="text-xl font-bold text-white">Product Catalog</h2>
                     <p className="text-sm text-slate-400 mt-1">
-                        {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+                        {categoryFilters.length > 0
+                            ? `Showing ${filteredProducts.length} of ${products.length} products (filtered)`
+                            : `${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`
+                        }
                     </p>
                 </div>
-                <button
-                    onClick={onAddProduct}
-                    className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-medium transition-colors"
-                >
-                    <Icons.Plus size={18} />
-                    Add Product
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => setIsFilterOpen(!isFilterOpen)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${isFilterOpen || categoryFilters.length > 0
+                            ? 'bg-cyan-600 text-white'
+                            : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                            }`}
+                    >
+                        <Icons.Filter size={18} />
+                        Filter
+                        {categoryFilters.length > 0 && (
+                            <span className="bg-white text-cyan-600 text-xs font-bold px-2 py-0.5 rounded-full">
+                                {categoryFilters.length}
+                            </span>
+                        )}
+                    </button>
+                    <button
+                        onClick={onAddProduct}
+                        className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-medium transition-colors"
+                    >
+                        <Icons.Plus size={18} />
+                        Add Product
+                    </button>
+                </div>
             </div>
+
+            {/* Filter Panel */}
+            {isFilterOpen && (
+                <FilterPanel
+                    onApply={(filters) => {
+                        setCategoryFilters(filters);
+                        setIsFilterOpen(false);
+                    }}
+                    onClose={() => setIsFilterOpen(false)}
+                    activeFilters={categoryFilters}
+                />
+            )}
 
             {/* Search */}
             <div className="relative">
@@ -172,17 +232,17 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
                                     <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                                         Category
                                     </th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
+                                        Subcategory
+                                    </th>
                                     <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
                                         Cost Price
                                     </th>
                                     <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
                                         List Price
                                     </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
-                                        Target Margin
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
-                                        Actual Margin
+                                    <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
+                                        Margin
                                     </th>
                                     <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
                                         Actions
@@ -206,7 +266,18 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
                                             )}
                                         </td>
                                         <td className="px-4 py-3 text-sm text-slate-300">
-                                            {product.category || '-'}
+                                            <span className="text-xs px-2 py-1 bg-cyan-500/10 text-cyan-300 rounded border border-cyan-500/30">
+                                                {getCategoryName(product.categoryId) || product.category || '-'}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-3 text-sm text-slate-300">
+                                            {product.subcategoryId ? (
+                                                <span className="text-xs px-2 py-1 bg-purple-500/10 text-purple-300 rounded border border-purple-500/30">
+                                                    {getCategoryName(product.subcategoryId)}
+                                                </span>
+                                            ) : (
+                                                <span className="text-slate-500">-</span>
+                                            )}
                                         </td>
                                         <td className="px-4 py-3 text-sm text-right">
                                             <div className="flex items-center justify-end gap-2">
@@ -256,10 +327,7 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-4 py-3 text-sm text-slate-300">
-                                            {product.targetMarginPercent || 0}%
-                                        </td>
-                                        <td className="px-4 py-3 text-sm">
+                                        <td className="px-4 py-3 text-right">
                                             {(() => {
                                                 // Calculate list price based on source
                                                 let listPrice;
@@ -299,9 +367,14 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
                                                 }
 
                                                 return (
-                                                    <span className={`font-medium ${colorClass}`}>
-                                                        {actualMargin.toFixed(1)}%
-                                                    </span>
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        <span className={`font-bold ${colorClass}`}>
+                                                            {actualMargin.toFixed(1)}%
+                                                        </span>
+                                                        <span className="text-xs text-slate-500">
+                                                            (Target: {targetMargin}%)
+                                                        </span>
+                                                    </div>
                                                 );
                                             })()}
                                         </td>
@@ -309,7 +382,7 @@ export const ProductCatalogTable = ({ onAddProduct, onEditProduct, refreshTrigge
                                             <div className="flex items-center justify-end gap-2">
                                                 <button
                                                     onClick={() => onEditProduct(product)}
-                                                    className="p-2 hover:bg-slate-600 text-slate-400 hover:text-white rounded transition-colors"
+                                                    className="p-2 hover:bg-slate-600 text-blue-400 rounded transition-colors"
                                                     title="Edit product"
                                                 >
                                                     <Icons.Edit size={16} />

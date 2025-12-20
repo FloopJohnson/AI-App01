@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     page: { padding: 30, fontSize: 12 }
 });
 
-export const ServiceReportDocument = ({ data }) => {
+export const ServiceReportDocument = () => {
     return (
         <Document>
             <Page size="A4" style={styles.page}>

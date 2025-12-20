@@ -14,6 +14,8 @@ const MOVEMENT_TYPE_ICONS = {
 export const StockMovementHistory = () => {
     const [movements, setMovements] = useState([]);
     const [parts, setParts] = useState([]);
+    const [fasteners, setFasteners] = useState([]);
+    const [products, setProducts] = useState([]);
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filterPartId, setFilterPartId] = useState('all');
@@ -30,6 +32,14 @@ export const StockMovementHistory = () => {
             setParts(snap.docs.map(doc => doc.data()));
         });
 
+        const unsubFasteners = onSnapshot(collection(db, 'fastener_catalog'), (snap) => {
+            setFasteners(snap.docs.map(doc => doc.data()));
+        });
+
+        const unsubProducts = onSnapshot(collection(db, 'products'), (snap) => {
+            setProducts(snap.docs.map(doc => doc.data()));
+        });
+
         const unsubLocations = onSnapshot(collection(db, 'locations'), (snap) => {
             setLocations(snap.docs.map(doc => doc.data()));
             setLoading(false);
@@ -38,9 +48,14 @@ export const StockMovementHistory = () => {
         return () => {
             unsubMovements();
             unsubParts();
+            unsubFasteners();
+            unsubProducts();
             unsubLocations();
         };
     }, []);
+
+    // Combine all items for filtering
+    const allItems = [...parts, ...fasteners, ...products];
 
     const filteredMovements = movements.filter(movement => {
         const matchesPart = filterPartId === 'all' || movement.partId === filterPartId;
@@ -65,9 +80,9 @@ export const StockMovementHistory = () => {
                         onChange={(e) => setFilterPartId(e.target.value)}
                         className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     >
-                        <option value="all">All Parts</option>
-                        {parts.map(part => (
-                            <option key={part.id} value={part.id}>{part.sku} - {part.name}</option>
+                        <option value="all">All Items</option>
+                        {allItems.map(item => (
+                            <option key={item.id} value={item.id}>{item.sku} - {item.name}</option>
                         ))}
                     </select>
                     <select
@@ -89,7 +104,7 @@ export const StockMovementHistory = () => {
                         <tr>
                             <th className="px-4 py-3">Timestamp</th>
                             <th className="px-4 py-3">Type</th>
-                            <th className="px-4 py-3">Part</th>
+                            <th className="px-4 py-3">Item</th>
                             <th className="px-4 py-3">Location</th>
                             <th className="px-4 py-3 text-right">Quantity</th>
                             <th className="px-4 py-3">User</th>
@@ -123,8 +138,19 @@ export const StockMovementHistory = () => {
                                             </div>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <div className="text-white font-medium">{part?.name || 'Unknown'}</div>
-                                            <div className="text-xs text-slate-400">{part?.sku}</div>
+                                            {(() => {
+                                                // Try to find the item in all catalogs
+                                                const item = parts.find(p => p.id === movement.partId) ||
+                                                    fasteners.find(f => f.id === movement.partId) ||
+                                                    products.find(p => p.id === movement.partId);
+
+                                                return (
+                                                    <>
+                                                        <div className="text-white font-medium">{item?.name || 'Unknown'}</div>
+                                                        <div className="text-xs text-slate-400">{item?.sku}</div>
+                                                    </>
+                                                );
+                                            })()}
                                         </td>
                                         <td className="px-4 py-3 text-slate-300">{location?.name || 'Unknown'}</td>
                                         <td className="px-4 py-3 text-right">

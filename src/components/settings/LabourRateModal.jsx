@@ -15,7 +15,7 @@ export const LabourRateModal = ({ isOpen, onClose }) => {
                 try {
                     const rate = await getLabourRate();
                     setLabourRateLocal((rate / 100).toFixed(2));
-                } catch (err) {
+                } catch {
                     setError('Failed to load labour rate');
                 } finally {
                     setLoading(false);

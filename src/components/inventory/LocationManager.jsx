@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Icons } from '../../constants/icons';
-import { addLocation, updateLocation } from '../../services/inventoryService';
+import { addLocation, updateLocation, deleteLocation } from '../../services/inventoryService';
 
 export const LocationManager = () => {
     const [locations, setLocations] = useState([]);
@@ -37,6 +37,18 @@ export const LocationManager = () => {
         setIsModalOpen(true);
     };
 
+    const handleDelete = async (location) => {
+        if (!confirm(`Are you sure you want to delete "${location.name}"?\n\nThis action cannot be undone. The location can only be deleted if it has no inventory or assets.`)) {
+            return;
+        }
+
+        try {
+            await deleteLocation(location.id);
+        } catch (error) {
+            alert(`Failed to delete location: ${error.message}`);
+        }
+    };
+
     if (loading) {
         return <div className="flex items-center justify-center h-64 text-slate-400">Loading locations...</div>;
     }
@@ -66,8 +78,8 @@ export const LocationManager = () => {
                         <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center gap-2">
                                 <div className={`p-2 rounded-lg ${location.type === 'warehouse' ? 'bg-blue-500/20 text-blue-400' :
-                                        location.type === 'truck' ? 'bg-orange-500/20 text-orange-400' :
-                                            'bg-slate-700 text-slate-400'
+                                    location.type === 'truck' ? 'bg-orange-500/20 text-orange-400' :
+                                        'bg-slate-700 text-slate-400'
                                     }`}>
                                     {location.type === 'warehouse' ? <Icons.Building size={20} /> :
                                         location.type === 'truck' ? <Icons.Truck size={20} /> :
@@ -78,12 +90,22 @@ export const LocationManager = () => {
                                     <p className="text-xs text-slate-400 capitalize">{location.type}</p>
                                 </div>
                             </div>
-                            <button
-                                onClick={() => handleEdit(location)}
-                                className="p-1.5 rounded hover:bg-slate-700 text-blue-400 transition-colors"
-                            >
-                                <Icons.Edit size={16} />
-                            </button>
+                            <div className="flex items-center gap-1">
+                                <button
+                                    onClick={() => handleEdit(location)}
+                                    className="p-1.5 rounded hover:bg-slate-700 text-blue-400 transition-colors"
+                                    title="Edit location"
+                                >
+                                    <Icons.Edit size={16} />
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(location)}
+                                    className="p-1.5 rounded hover:bg-slate-700 text-red-400 transition-colors"
+                                    title="Delete location"
+                                >
+                                    <Icons.Trash2 size={16} />
+                                </button>
+                            </div>
                         </div>
 
                         {location.isReorderLocation && (

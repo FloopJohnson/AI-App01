@@ -386,6 +386,24 @@ export const updateLocation = async (locationId, updates) => {
     }
 };
 
+export const deleteLocation = async (locationId) => {
+    try {
+        // Check for existing inventory at this location
+        const inventorySnap = await getDocs(query(collection(db, 'inventory_state'), where('locationId', '==', locationId)));
+        const assetsSnap = await getDocs(query(collection(db, 'serialized_assets'), where('currentLocationId', '==', locationId)));
+
+        if (!inventorySnap.empty || !assetsSnap.empty) {
+            throw new Error('Cannot delete location with existing inventory or assets. Please move all stock first.');
+        }
+
+        await deleteDoc(doc(db, 'locations', locationId));
+        console.log('[Inventory] Location deleted:', locationId);
+    } catch (error) {
+        console.error('[Inventory] Error deleting location:', error);
+        throw error;
+    }
+};
+
 // ==========================================
 // SUPPLIER OPERATIONS
 // ==========================================

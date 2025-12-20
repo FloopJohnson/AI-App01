@@ -64,7 +64,7 @@ export const IntegratorTab = ({ formData, onChange, readOnly = false }) => {
 
             {/* Integrator Rows */}
             <div className="space-y-3">
-                {integratorRows.map((row, index) => (
+                {integratorRows.map((row) => (
                     <div key={row.id} className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 items-center">
                         {/* Label */}
                         <input

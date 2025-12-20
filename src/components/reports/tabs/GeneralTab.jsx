@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const GeneralTab = ({ formData, onChange, site, asset, employees = [], readOnly = false }) => {
+export const GeneralTab = ({ formData, onChange, asset, employees = [], readOnly = false }) => {
     const handleChange = (field, value) => {
         onChange(field, value);
     };

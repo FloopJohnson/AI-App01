@@ -33,8 +33,8 @@ export class ProductRepository extends BaseRepository {
      */
     async createProduct(productData) {
         try {
-            if (!productData.sku || !productData.name || !productData.category) {
-                throw new Error('SKU, name, and category are required');
+            if (!productData.sku || !productData.name) {
+                throw new Error('SKU and name are required');
             }
 
             return await this.save(productData);

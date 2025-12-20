@@ -6,6 +6,8 @@ import { adjustStockQuantity } from '../../services/inventoryService';
 
 export const StockTakeMode = () => {
     const [parts, setParts] = useState([]);
+    const [fasteners, setFasteners] = useState([]);
+    const [products, setProducts] = useState([]);
     const [inventory, setInventory] = useState([]);
     const [locations, setLocations] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState('');
@@ -16,9 +18,24 @@ export const StockTakeMode = () => {
 
     useEffect(() => {
         const unsubParts = onSnapshot(collection(db, 'part_catalog'), (snap) => {
-            // Only non-serialized parts for stock take
-            const partsList = snap.docs.map(doc => doc.data()).filter(p => !p.isSerialized);
+            // Only non-serialized parts with stock tracking enabled for stock take
+            const partsList = snap.docs.map(doc => doc.data())
+                .filter(p => !p.isSerialized && (p.trackStock !== false));
             setParts(partsList);
+        });
+
+        const unsubFasteners = onSnapshot(collection(db, 'fastener_catalog'), (snap) => {
+            // Only non-serialized fasteners with stock tracking enabled for stock take
+            const fastenersList = snap.docs.map(doc => doc.data())
+                .filter(f => !f.isSerialized && (f.trackStock !== false));
+            setFasteners(fastenersList);
+        });
+
+        const unsubProducts = onSnapshot(collection(db, 'products'), (snap) => {
+            // Only non-serialized products with stock tracking enabled for stock take
+            const productsList = snap.docs.map(doc => doc.data())
+                .filter(p => p.trackStock !== false);
+            setProducts(productsList);
         });
 
         const unsubInventory = onSnapshot(collection(db, 'inventory_state'), (snap) => {
@@ -36,6 +53,8 @@ export const StockTakeMode = () => {
 
         return () => {
             unsubParts();
+            unsubFasteners();
+            unsubProducts();
             unsubInventory();
             unsubLocations();
         };
@@ -71,7 +90,7 @@ export const StockTakeMode = () => {
         }
 
         const updates = Object.entries(counts)
-            .filter(([_, _count]) => _count !== '')
+            .filter(([, _count]) => _count !== '')
             .map(([partId, count]) => ({
                 partId,
                 variance: parseInt(count) - getCurrentStock(partId)
@@ -108,9 +127,12 @@ export const StockTakeMode = () => {
         }
     };
 
-    const filteredParts = parts.filter(part =>
-        part.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        part.sku.toLowerCase().includes(searchTerm.toLowerCase())
+    // Combine parts, fasteners, and products
+    const allItems = [...parts, ...fasteners, ...products];
+
+    const filteredParts = allItems.filter(item =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.sku.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (loading) {

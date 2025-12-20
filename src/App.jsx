@@ -623,13 +623,8 @@ export function App() {
     setEditNoteContent({ content: '', author: '' });
   };
 
-  // Check for PDF Dev Mode (after all hooks per Rules of Hooks)
-  const searchParams = new URLSearchParams(window.location.search);
-  if (searchParams.get('mode') === 'pdf') {
-    return <DevPDFViewer />;
-  }
-
   // --- REFACTORED SPECS CONTENT TO AVOID NESTING ERRORS ---
+  // NOTE: This useMemo MUST be defined before any conditional returns (Rules of Hooks)
   const specsPanelContent = useMemo(() => {
     if (!selectedAsset) {
       return (
@@ -799,6 +794,13 @@ export function App() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedAsset, selectedSpecs, editingNoteId, editNoteContent, specNoteInput]);
+
+  // Check for PDF Dev Mode (moved here to comply with Rules of Hooks)
+  // All hooks must be called before any conditional returns
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.get('mode') === 'pdf') {
+    return <DevPDFViewer />;
+  }
 
   // --- MAIN RETURN: RENDER SIDEBAR + CONDITIONAL CONTENT ---
   return (
@@ -2057,6 +2059,7 @@ export function App() {
       />
 
       <ContextWizardModal
+        key={isActionMenuOpen && wizardAction === 'analytics' ? 'open' : 'closed'}
         isOpen={isActionMenuOpen && wizardAction === 'analytics'}
         onClose={() => { setIsActionMenuOpen(false); setWizardAction(null); }}
         sites={sites}
@@ -2280,6 +2283,7 @@ export function App() {
 
       {/* UNIVERSAL CONTEXT WIZARD */}
       <ContextWizardModal
+        key={wizardAction || 'closed'}
         isOpen={!!wizardAction}
         onClose={() => setWizardAction(null)}
         sites={sites}
